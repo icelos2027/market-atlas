@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>市场参与者图鉴</title>
+<meta name="description" content="20 类市场参与者的工作方式与交易过程图示">
+<meta name="theme-color" content="#f2ede5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1e1b17" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="市场图鉴">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="fonts/lxgwwenkaigbscreen/result.min.css">
+<link rel="stylesheet" href="fonts/lxgwwenkaimonogbscreen/result.min.css">
+<style>
+/* 布局：左侧固定索引（按市场层级分组）＋ 右侧一次只看一个参与者；窄屏时索引变成顶部下拉。
+   配色沿用「慢慢联系」：燕麦（默认）/ 暮紫，各有浅深两套；不用纯白纯黑，无动画，实线边框。 */
+:root {
+  --bg: #f2ede5;
+  --surface: #faf7f2;
+  --surface-2: #ece5da;
+  --text: #3a332b;
+  --muted: #675e52;
+  --border: #e0d6c7;
+  --accent: #7e6447;
+  --accent-text: #faf7f2;
+  --accent-soft: #ebe1d3;
+  --accent-strong: #5e4a34;
+  --other: #5f7a94;          /* 第二色：卖方 / 对比序列（灰蓝） */
+  --other-soft: #e2e6e9;
+  --warn: #9a7a35;
+  --illo-ink: #8c7b66;
+  --illo-fill: #e8dcc9;
+  --font-body: 'LXGW WenKai GB Screen', 'LXGW WenKai Screen', 'LXGW WenKai', 'LXGW WenKai TC', 'Kaiti SC', 'STKaiti', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  --font-data: 'LXGW WenKai Mono GB Screen', 'LXGW WenKai Mono TC', 'LXGW WenKai Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --fs-s: 0.8125rem;
+  --fs-m: 0.9375rem;
+  --fs-b: 1rem;
+  --fs-l: 1.1875rem;
+  --fs-xl: 1.5rem;
+  --fs-xxl: 1.875rem;
+  --r: 8px;
+  color-scheme: light;
+}
+:root[data-palette="dusk"] {
+  --bg: #eeecf1; --surface: #f8f7fa; --surface-2: #e6e3ec; --text: #322f3a; --muted: #625e75;
+  --border: #dcd8e3; --accent: #645e80; --accent-text: #f8f7fa; --accent-soft: #e3e0ec; --accent-strong: #4a4563;
+  --other: #5c7f8f; --other-soft: #e0e7ea; --warn: #8f7738; --illo-ink: #7d7896; --illo-fill: #dfdbea;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1e1b17; --surface: #27231e; --surface-2: #312c26; --text: #ded6ca; --muted: #b3a898;
+    --border: #3d372f; --accent: #a99174; --accent-text: #1f1913; --accent-soft: #3a3128; --accent-strong: #e3cfb2;
+    --other: #8fa7bd; --other-soft: #2c333a; --warn: #c4a765; --illo-ink: #a8977f; --illo-fill: #3a3128;
+    color-scheme: dark;
+  }
+  :root:not([data-theme="light"])[data-palette="dusk"] {
+    --bg: #1b1a20; --surface: #24232b; --surface-2: #2e2c36; --text: #dad7e1; --muted: #ada8bc;
+    --border: #3a3845; --accent: #9890b8; --accent-text: #1c1a24; --accent-soft: #34314a; --accent-strong: #d3cdea;
+    --other: #8fb0bd; --other-soft: #2a3238; --warn: #c2a768; --illo-ink: #8f89aa; --illo-fill: #34314a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1e1b17; --surface: #27231e; --surface-2: #312c26; --text: #ded6ca; --muted: #b3a898;
+  --border: #3d372f; --accent: #a99174; --accent-text: #1f1913; --accent-soft: #3a3128; --accent-strong: #e3cfb2;
+  --other: #8fa7bd; --other-soft: #2c333a; --warn: #c4a765; --illo-ink: #a8977f; --illo-fill: #3a3128;
+  color-scheme: dark;
+}
+:root[data-theme="dark"][data-palette="dusk"] {
+  --bg: #1b1a20; --surface: #24232b; --surface-2: #2e2c36; --text: #dad7e1; --muted: #ada8bc;
+  --border: #3a3845; --accent: #9890b8; --accent-text: #1c1a24; --accent-soft: #34314a; --accent-strong: #d3cdea;
+  --other: #8fb0bd; --other-soft: #2a3238; --warn: #c2a768; --illo-ink: #8f89aa; --illo-fill: #34314a;
+}
+:root[data-font="large"] { font-size: 18.5px; }
+
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); -webkit-text-size-adjust: 100%; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+*, *::before, *::after { box-sizing: border-box; animation: none !important; scroll-behavior: auto !important; }
+body {
+  margin: 0; -webkit-tap-highlight-color: transparent; background: var(--bg); color: var(--text);
+  font-family: var(--font-body); font-size: var(--fs-b); line-height: 1.7; letter-spacing: 0.01em;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: var(--accent-strong); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--other); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.35; margin: 0; font-weight: 700; }
+p { margin: 0; }
+.num, .mono { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+
+.shell { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; max-width: 1180px; margin: 0 auto; }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-block: 18px 16px; border-bottom: 1px solid var(--border); }
+.brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.brand a { color: var(--text); text-decoration: none; font-size: var(--fs-l); font-weight: 700; }
+.brand .sub { color: var(--muted); font-size: var(--fs-s); }
+.prefs { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; font-size: var(--fs-s); color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--surface); }
+.seg button { font: inherit; font-size: var(--fs-s); color: var(--text); background: transparent; border: 0; padding: 4px 12px; min-height: 30px; cursor: pointer; }
+@media (pointer: coarse) { .seg button { min-height: 36px; padding: 4px 14px; } .btn { min-height: 40px; } }
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+.pref { display: flex; align-items: center; gap: 8px; }
+
+.layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 40px; padding-top: 24px; }
+.index { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; max-height: calc(100vh - 32px); overflow-y: auto; display: flex; flex-direction: column; gap: 18px; padding-right: 4px; }
+.index h3 { font-size: var(--fs-s); color: var(--muted); font-weight: 400; letter-spacing: 0.08em; margin-bottom: 4px; }
+.index ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.index a { display: block; padding: 3px 10px; border-radius: 6px; color: var(--text); text-decoration: none; font-size: var(--fs-m); }
+.index a:hover { background: var(--surface-2); }
+.index a[aria-current="page"] { background: var(--accent-soft); color: var(--accent-strong); font-weight: 700; }
+.picker { display: none; }
+
+main { min-width: 0; max-width: 820px; display: flex; flex-direction: column; gap: 20px; }
+#content { display: flex; flex-direction: column; gap: 36px; min-width: 0; }
+.crumb { font-size: var(--fs-s); color: var(--muted); }
+.head { display: flex; flex-direction: column; gap: 10px; }
+.head h1 { font-size: var(--fs-xxl); }
+.head .en { font-family: var(--font-data); color: var(--muted); font-size: var(--fs-s); letter-spacing: 0.04em; }
+.lead { font-size: var(--fs-l); line-height: 1.65; max-width: 38em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: var(--fs-s); border: 1px solid var(--border); background: var(--surface); border-radius: 6px; padding: 1px 10px; color: var(--muted); }
+.chip b { color: var(--text); font-weight: 400; }
+
+section { display: flex; flex-direction: column; gap: 14px; }
+section > h2 { font-size: var(--fs-l); display: flex; align-items: baseline; gap: 10px; }
+section > h2 .tag { font-size: var(--fs-s); font-weight: 400; color: var(--muted); }
+.prose { display: flex; flex-direction: column; gap: 12px; max-width: 40em; }
+.note { font-size: var(--fs-s); color: var(--muted); max-width: 46em; }
+
+.diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px; }
+.diagram svg { display: block; }
+.lane text { font-family: var(--font-body); font-size: 13px; fill: var(--text); }
+.lane .halo { paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+.lane .ln-h { fill: var(--surface-2); stroke: var(--border); }
+.lane .ln-l { stroke: var(--border); stroke-width: 1.5; }
+.lane .ln-row { stroke: var(--surface-2); stroke-width: 1; }
+.lane .ln-a { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+.lane .ah { fill: var(--accent); }
+.lane .ln-s { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+.lane .ln-nc { fill: var(--bg); stroke: var(--border); }
+.lane .ln-n { font-family: var(--font-data); font-size: 11px; fill: var(--muted); }
+ol.steps { margin: 0; padding-left: 1.6em; display: flex; flex-direction: column; gap: 4px; max-width: 44em; font-size: var(--fs-m); }
+ol.steps li::marker { font-family: var(--font-data); color: var(--muted); }
+ol.steps .sn { color: var(--muted); }
+
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.panel .bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.panel .status { font-size: var(--fs-s); color: var(--muted); }
+.btn { font: inherit; font-size: var(--fs-m); padding: 5px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-text); cursor: pointer; }
+.btn.quiet { background: transparent; color: var(--accent-strong); border-color: var(--border); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.msg { background: var(--surface-2); border-radius: 6px; padding: 10px 12px; font-size: var(--fs-m); min-height: 4.6em; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-s); }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 400; white-space: nowrap; }
+td.r, th.r { text-align: right; }
+td.num, td.r { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+tr.hl td { background: var(--accent-soft); }
+tr.dim td { color: var(--muted); }
+.buy { color: var(--accent-strong); }
+.sell { color: var(--other); }
+.okv { color: var(--accent-strong); }
+.warnv { color: var(--warn); }
+.cell-bar { display: flex; align-items: center; gap: 8px; }
+.cell-bar span.b { display: inline-block; height: 8px; background: var(--accent); border-radius: 2px; }
+.ord { display: inline-block; font-family: var(--font-data); font-size: 12px; border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; margin: 1px 2px; background: var(--bg); white-space: nowrap; }
+.qlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-s); }
+.qlist li { display: flex; gap: 10px; }
+.qlist .st { width: 4.5em; flex: none; color: var(--muted); }
+.qlist li.cur { color: var(--accent-strong); }
+.qlist li.cur .st { color: var(--accent-strong); }
+.ctrl { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 4.5em; align-items: center; gap: 4px 10px; font-size: var(--fs-s); }
+.ctrl input[type="range"] { width: 100%; accent-color: var(--accent); }
+.ctrl output { font-family: var(--font-data); text-align: right; }
+input[type="number"] { font: inherit; font-family: var(--font-data); width: 7em; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+.formula { font-family: var(--font-data); font-size: var(--fs-s); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; line-height: 1.8; overflow-x: auto; white-space: nowrap; }
+svg.chart { width: 100%; height: auto; display: block; }
+svg.chart text { font-family: var(--font-body); font-size: 12px; fill: var(--muted); }
+svg.chart .t-strong { fill: var(--text); }
+svg.chart .grid { stroke: var(--surface-2); stroke-width: 1; }
+svg.chart .axis { stroke: var(--border); stroke-width: 1; }
+.ems { font-family: var(--font-data); font-size: 12.5px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.ems .row { display: grid; grid-template-columns: repeat(7, minmax(max-content, 1fr)); gap: 0 14px; padding: 6px 10px; overflow-x: auto; }
+.ems .row.h { background: var(--surface-2); color: var(--muted); }
+.prog { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.prog span { display: block; height: 100%; background: var(--accent); }
+
+dl.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; }
+dl.two > div { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+dl.two dt { font-size: var(--fs-s); color: var(--muted); }
+dl.two dd { margin: 0; font-size: var(--fs-m); }
+ul.rules { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; max-width: 44em; font-size: var(--fs-m); }
+ul.rules .d { font-family: var(--font-data); font-size: var(--fs-s); color: var(--muted); margin-right: 6px; }
+dl.terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(15em, 1fr)); gap: 10px 24px; margin: 0; }
+dl.terms div { border-top: 1px solid var(--border); padding-top: 6px; }
+dl.terms dt { font-weight: 700; font-size: var(--fs-m); }
+dl.terms dd { margin: 0; font-size: var(--fs-s); color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.links a { font-size: var(--fs-m); border: 1px solid var(--border); background: var(--surface); padding: 2px 12px; border-radius: 6px; text-decoration: none; }
+.links a:hover { background: var(--surface-2); }
+.src { font-size: var(--fs-s); color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--border); padding-top: 16px; font-size: var(--fs-m); }
+.pager a { text-decoration: none; }
+
+/* 总览 */
+.ov-head { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 24px; align-items: center; }
+.ov-head h1 { font-size: var(--fs-xxl); }
+.ov-head .illo { width: 150px; height: auto; }
+.map { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.map .col { padding: 14px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--border); position: relative; }
+.map .col:last-child { border-right: 0; }
+.map .col h3 { font-size: var(--fs-m); }
+.map .col .what { font-size: var(--fs-s); color: var(--muted); min-height: 3.4em; }
+.map .col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.map .col a { display: block; font-size: var(--fs-m); text-decoration: none; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; background: var(--bg); }
+.map .col a:hover { border-color: var(--accent); }
+.map .col a small { display: block; color: var(--muted); font-size: 12px; }
+.map .base { grid-column: 1 / -1; border-top: 1px solid var(--border); padding: 12px 14px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; background: var(--surface-2); }
+.map .base h3 { font-size: var(--fs-m); }
+.map .base a { font-size: var(--fs-m); text-decoration: none; color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; background: var(--bg); }
+.flowline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-size: var(--fs-s); color: var(--muted); }
+.flowline span { padding: 0 14px; }
+.axes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.axes > div { border-top: 1px solid var(--border); padding-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.axes h3 { font-size: var(--fs-m); }
+.axes p { font-size: var(--fs-s); color: var(--muted); }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 16px; }
+  .index { display: none; }
+  .picker { display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-s); color: var(--muted); }
+  .picker select { font: inherit; font-size: var(--fs-b); color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; }
+  .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map .col:nth-child(2) { border-right: 0; }
+  .map .col:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .flowline { display: none; }
+}
+@media (max-width: 560px) {
+  .grid2, dl.two, .axes { grid-template-columns: minmax(0, 1fr); }
+  .map { grid-template-columns: minmax(0, 1fr); }
+  .map .col { border-right: 0; border-bottom: 1px solid var(--border); }
+  .ov-head { grid-template-columns: minmax(0, 1fr); }
+  .ov-head .illo { display: none; }
+  .head h1, .ov-head h1 { font-size: var(--fs-xl); }
+  .ctrl { grid-template-columns: 6.5em minmax(0, 1fr) 4em; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <header class="top">
+    <div class="brand"><a href="#overview">市场参与者图鉴</a><span class="sub">20 类参与者 · 规则资料核对至 2026-11-04 · 示例数字均为虚构</span></div>
+    <div class="prefs">
+      <div class="pref"><span id="lbl-pal">配色</span><div class="seg" role="group" aria-labelledby="lbl-pal"><button type="button" id="pal-oat" data-pal="oat">燕麦</button><button type="button" id="pal-dusk" data-pal="dusk">暮紫</button></div></div>
+      <div class="pref"><span id="lbl-theme">深浅</span><div class="seg" role="group" aria-labelledby="lbl-theme"><button type="button" id="theme-system" data-theme-pick="system">跟随系统</button><button type="button" id="theme-light" data-theme-pick="light">浅</button><button type="button" id="theme-dark" data-theme-pick="dark">深</button></div></div>
+      <div class="pref"><span id="lbl-font">字号</span><div class="seg" role="group" aria-labelledby="lbl-font"><button type="button" id="font-normal" data-font="normal">标准</button><button type="button" id="font-large" data-font="large">大</button></div></div>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="index" id="index" aria-label="参与者目录"></nav>
+    <main id="view">
+      <div class="picker"><label for="picker">选择参与者</label><select id="picker"></select></div>
+      <div id="content"></div>
+    </main>
+  </div>
+</div>
+
+<script>
+'use strict';
+const GROUPS = [
+  ['P', '一级市场', '证券第一次卖给投资者：融资、发行、申购'],
+  ['X', '交易所与二级市场', '已发行证券在交易所里连续买卖'],
+  ['O', '场外与批发市场', '机构之间点对点询价，大额、非标准'],
+  ['C', '大宗商品', '实货贸易与期货：价格、物流、对冲'],
+  ['I', '基础设施与政策', '成交之后的结算，以及央行的流动性操作']
+];
+
+const E = [
+/* ---------- 一级市场 ---------- */
+{ id: 'vcpe', g: 'P', name: '风险投资与私募股权', en: 'VC / PE', role: '资金提供者', auto: '以人工为主',
+  one: '用基金的钱买入未上市公司的股权，持有若干年后通过上市、并购或转让退出。',
+  does: [
+    '募资：GP（基金管理人）向 LP（养老金、保险资金、母基金、政府引导基金、家族办公室）募集封闭式基金，存续期常见 7–10 年。GP 收管理费（常见每年 1.5%–2%）和超额收益分成（常见 20%，即 carry）。',
+    '投资：一个投资团队一年看几百个项目，最后投出的通常是个位数。流程是初筛、立项、尽职调查（业务、财务、法律）、投资决策委员会表决、签投资协议、打款和工商变更。',
+    '投后与退出：派董事或观察员，参与后续融资和关键招聘。退出方式有 IPO、并购、老股转让，以及把份额整体卖给二手份额基金（S 基金）。'
+  ],
+  flow: { lanes: ['LP', 'GP / 基金', '创业公司', '律师 · 会计师', '下一轮 · 买方'], steps: [
+    [0, 1, '认缴出资', '签有限合伙协议，承诺出资额，钱在投资时才实缴。'],
+    [1, 2, '初步接触，签保密协议'],
+    [1, 1, '立项会：是否投入尽调'],
+    [1, 3, '委托法律与财务尽调'],
+    [3, 1, '尽调报告', '财务尽调核对收入真实性，法律尽调核对股权结构、知识产权和诉讼。'],
+    [1, 2, '发出投资条款清单', 'Term Sheet 写明估值、金额、优先清算权、反稀释、董事席位，多数条款不具约束力。'],
+    [1, 1, '投资决策委员会表决'],
+    [0, 1, '按缴款通知实缴', 'capital call：GP 发缴款通知，LP 在约定天数内打款。'],
+    [1, 2, '签增资协议，打款'],
+    [1, 4, '退出：IPO · 并购 · 老股转让', '退出所得按协议顺序分配：先还 LP 本金和门槛收益，再分 carry。']
+  ]},
+  money: '管理费覆盖团队成本，主要收益来自 carry。回报高度集中：一只基金的收益常由一两个项目决定。',
+  risk: '流动性差，估值依赖下一轮价格，退出时间受 IPO 审核节奏和并购市场影响。',
+  terms: [['投前 / 投后估值', '投后估值 = 投前估值 + 本轮融资额。'], ['优先清算权', '公司被出售或清算时，投资人先拿回约定金额。'], ['反稀释', '后续低价融资时调整投资人的持股成本。'], ['DPI / TVPI', 'DPI 是已分配现金 ÷ 实缴；TVPI 再加上未退出部分的估值。'], ['capital call', 'GP 要求 LP 按承诺出资实际打款。'], ['S 基金', '购买其他基金份额或老股的二手份额基金。']],
+  related: ['ipo', 'block', 'ccp'] },
+
+{ id: 'ipo', g: 'P', name: '投行 IPO 承销', en: 'Underwriting · Book-building', role: '发行中介', auto: '人工 + 系统',
+  one: '帮企业第一次向公众卖股票：准备申报材料、应对审核、组织机构报价、定价并分配股票。',
+  does: [
+    '保荐机构负责申报、回复审核问询和上市后的持续督导；承销商负责销售。2023 年全面注册制后，主板、科创板、创业板、北交所的发行由交易所审核、证监会注册。',
+    '定价的核心是网下询价：证券公司、基金、保险、私募等网下投资者为其管理的配售对象报出价格和数量。主承销商剔除最高的一部分报价，结合剩余报价的中位数、加权平均数和可比公司估值确定发行价。',
+    '确定价格后，网下投资者按发行价申购，网上散户申购后摇号。网上认购倍数高时启动回拨，把一部分股票从网下转到网上。'
+  ],
+  flow: { lanes: ['发行人', '保荐 · 承销商', '交易所 · 证监会', '网下机构', '网上投资者'], steps: [
+    [1, 0, '辅导、尽调、写招股书'],
+    [1, 2, '申报，回复问询', '交易所审核问询通常有多轮，问题公开。'],
+    [2, 1, '审核通过，证监会注册'],
+    [1, 3, '路演，发投资价值研究报告'],
+    [3, 1, '网下询价：报价 + 数量', '每个配售对象最多报 3 个价格，最高与最低价差不超过 20%。'],
+    [1, 1, '剔除最高报价，确定发行价', '剔除比例不超过 3%；实践中多按 1%，科创板 2024 年 6 月起试点统一按 3%。'],
+    [3, 1, '网下按发行价申购'],
+    [4, 1, '网上申购，摇号中签'],
+    [1, 1, '回拨：调整网下与网上比例'],
+    [1, 0, '缴款，划转募集资金，上市']
+  ]},
+  widgets: [['询价簿：剔除最高报价后定价', 'ipoBook']],
+  money: '承销保荐费按募资额的一定比例收取。科创板要求保荐机构相关子公司跟投，比例 2%–5%，上市后这部分股票有锁定期。',
+  risk: '定价过高导致上市首日破发，影响机构关系和后续项目；审核不通过时前期投入难以收回。',
+  cn: [
+    ['2021-09', '最高报价剔除比例从“不低于 10%”改为“不超过 3%”，行业倡导不低于 1%。'],
+    ['2023', '全面注册制规则明确剔除比例不超过 3%，并要求披露剔除后报价的中位数与加权平均数。'],
+    ['2024-06', '上交所落实“科创板八条”，科创板试点统一执行 3% 的最高报价剔除比例。']
+  ],
+  terms: [['簿记建档', '收集投资者在不同价格上的认购意向，形成需求曲线后定价。'], ['有效报价', '未被剔除且不低于发行价的报价，可参与网下申购。'], ['回拨', '根据网上认购倍数调整网上、网下发行数量。'], ['战略配售', '发行前向特定投资者配售，有锁定期。'], ['绿鞋', '超额配售选择权，承销商可多卖 15%，用于上市后稳定股价。'], ['破发', '上市后价格低于发行价。']],
+  src: [['中证网：科创板将试点统一执行 3% 的最高报价剔除比例', 'https://www.cs.com.cn/xwzx/hg/202406/t20240620_6418520.html'], ['证券时报：全面注册制下新股发行定价机制完善研究', 'https://www.stcn.com/article/detail/1137941.html']],
+  related: ['vcpe', 'buyside', 'retail'] },
+
+{ id: 'bond', g: 'P', name: '债券发行与利率招标', en: 'Bond Auction · Book-building', role: '发行组织', auto: '人工 + 系统',
+  one: '国债、政策性金融债通过招标发行；公司信用类债券多数通过簿记建档发行。',
+  does: [
+    '招标发行：发行人公布品种、期限和计划发行量，承销团成员在规定时段内通过招标系统提交利率（或价格）和数量。系统按利率从低到高排序，累计到发行量为止；最后一个中标位置上的投标按比例分配。',
+    '中标后的结算方式由招标规则决定：荷兰式下所有中标者按同一个边际利率；美国式下每个中标者按自己的投标利率；混合式介于两者之间。',
+    '簿记建档：主承销商在簿记时段收集投资者在各个利率上的申购金额，按需求确定票面利率。发行后债券在银行间或交易所上市交易。'
+  ],
+  flow: { lanes: ['发行人', '承销团成员', '招标系统', '终端投资者'], steps: [
+    [0, 2, '发布招标书：品种、规模、方式'],
+    [3, 1, '报需求：利率 + 金额', '承销团成员先收集自己客户的需求，再决定投标。'],
+    [1, 2, '招标时段内投标'],
+    [2, 2, '由低到高排序，累计至发行量'],
+    [2, 1, '公布中标利率与中标量', '同时公布全场认购倍数，反映需求强弱。'],
+    [1, 0, '缴款'],
+    [1, 3, '分销，上市交易']
+  ]},
+  widgets: [['招标计算：荷兰式、美国式、混合式', 'tender']],
+  money: '承销团成员赚取承销费和分销价差；做市和自营部门利用一级、二级市场的利率差。',
+  risk: '中标后市场利率上行，库存债券价格下跌；需求判断错误导致投标利率偏离。',
+  terms: [['边际中标利率', '累计到发行量时最后一个中标位置的利率。'], ['全场倍数', '总投标量 ÷ 计划发行量。'], ['荷兰式', '单一价格：所有中标者按边际利率。'], ['美国式', '多重价格：各自按投标利率。'], ['承销团', '有资格参与投标的金融机构名单。']],
+  related: ['ib-dealer', 'pboc', 'ccp'] },
+
+{ id: 'etf', g: 'P', name: 'ETF 申购赎回与套利', en: 'ETF Creation / Redemption', role: '套利者', auto: '全自动程序',
+  one: '用一篮子股票向基金公司换 ETF 份额，或反过来；当 ETF 价格偏离净值时做套利。',
+  does: [
+    'ETF 有两个市场。一级市场：按每天公布的申购赎回清单（PCF），用一篮子成分股加少量现金申购份额，或赎回份额换回股票，最小单位通常是几十万到上百万份。二级市场：份额像股票一样在交易所买卖。',
+    '交易所盘中每 15 秒左右发布 IOPV（基金份额参考净值）。ETF 价格高于 IOPV 且超过交易成本时，套利者买入一篮子股票、申购份额、在二级市场卖出；价格低于 IOPV 时反向操作。',
+    '这类套利几乎都由程序执行：同时下几百只成分股的订单，需要考虑停牌股、涨跌停股的现金替代。'
+  ],
+  flow: { lanes: ['套利程序', '交易所', '参与券商', '基金管理人 · 登记'], steps: [
+    [0, 0, '发现溢价：价格 > IOPV + 成本'],
+    [0, 1, '买入一篮子成分股'],
+    [0, 2, '提交申购：股票篮 + 现金差额'],
+    [2, 3, '申购指令'],
+    [3, 0, '确认 ETF 份额', '份额什么时候能卖出，取决于 ETF 类型和交易所规则。'],
+    [0, 1, '在二级市场卖出 ETF 份额']
+  ]},
+  example: { caption: '一次溢价套利（示例数字）', head: ['项目', '数值'], rows: [
+    ['IOPV（参考净值）', '2.000 元'], ['ETF 成交价', '2.012 元（溢价 0.60%）'], ['申购份额', '1,000,000 份'],
+    ['买入股票篮花费', '2,000,000 元'], ['卖出份额收入', '2,012,000 元'], ['佣金、冲击成本、申购费（约 0.15%）', '3,000 元'], ['套利收益', '约 9,000 元']
+  ]},
+  money: '每次的价差很小，依靠频率和规模。基金公司也希望有人套利，因为套利让 ETF 价格贴近净值。',
+  risk: '执行期间成分股价格变化；部分成分股停牌或涨跌停买不到；现金替代的结算差额。',
+  terms: [['PCF', '申购赎回清单：每份额对应的成分股和现金。'], ['IOPV', '盘中按成分股实时价格估算的份额净值。'], ['折溢价', 'ETF 价格相对 IOPV 的偏离。'], ['现金替代', '某只成分股用现金代替交付。']],
+  related: ['mm', 'quant', 'exchange'] },
+
+/* ---------- 交易所与二级市场 ---------- */
+{ id: 'exchange', g: 'X', name: '交易所撮合引擎', en: 'Matching Engine · Continuous Auction', role: '基础设施', auto: '全自动系统',
+  one: '把买单和卖单按“价格优先、时间优先”配对成交的系统。',
+  does: [
+    '撮合系统为每只证券维护一个订单簿：买单按价格从高到低排列，卖单从低到高排列，同一价格按到达时间排队。',
+    '新订单到达时，先与对手方的最优价格比较。能成交就按订单簿上已有订单的价格成交，一直吃到价格不再满足或数量用完；剩余部分按订单类型挂在订单簿上或撤销。',
+    'A 股连续竞价时段为 9:30–11:30、13:00–14:57。连续竞价期间有“价格笼子”：限价买单不能高于买入基准价格的 102%，卖单不能低于卖出基准价格的 98%（主板另有基准价上下 10 个最小价格单位的放宽）。'
+  ],
+  flow: { lanes: ['投资者', '券商柜台', '交易所网关', '撮合引擎', '登记结算'], steps: [
+    [0, 1, '下单'],
+    [1, 1, '前端风控：资金、持仓、价格'],
+    [1, 2, '报盘'],
+    [2, 3, '按到达顺序排入'],
+    [3, 3, '与对手方最优价比较'],
+    [3, 1, '委托确认 / 成交回报'],
+    [3, 4, '成交数据'],
+    [4, 1, '日终清算，T+1 交收']
+  ]},
+  widgets: [['撮合演示：逐笔处理订单', 'matcher']],
+  money: '交易所收取交易经手费、行情数据费、托管机房和接入服务费。',
+  risk: '系统故障和异常订单（如乌龙指）。交易所用价格笼子、涨跌停、熔断类机制和程序化交易监控来控制。',
+  terms: [['订单簿', '某一时刻所有未成交订单按价格和时间排成的列表。'], ['最优价', '买一（最高买价）和卖一（最低卖价）。'], ['限价单', '指定价格，可以挂单等待。'], ['市价单', 'A 股有“最优五档即时成交剩余撤销”等类型，不指定价格。'], ['价格笼子', '连续竞价时限制申报价格偏离基准价格的范围。'], ['涨跌停', '主板 ±10%，科创板和创业板 ±20%，北交所 ±30%。']],
+  related: ['auction', 'hft', 'mm', 'retail'] },
+
+{ id: 'auction', g: 'X', name: '集合竞价', en: 'Call Auction', role: '价格形成机制', auto: '全自动系统',
+  one: '在一段时间里只收集订单不成交，到时点用一个统一价格一次性撮合。',
+  does: [
+    'A 股开盘集合竞价为 9:15–9:25，其中 9:20–9:25 不接受撤单；9:25–9:30 交易所接收订单但不处理。沪深两市收盘集合竞价为 14:57–15:00。',
+    '集合竞价期间，交易所实时发布虚拟开盘参考价、匹配量和未匹配量，但不成交。',
+    '确定价格的原则：在这个价格上成交量最大；高于它的买单和低于它的卖单全部成交；与它相同价格的买方或卖方至少有一方全部成交。多个价格都满足时，按各交易所的进一步规则选择。'
+  ],
+  flow: { lanes: ['投资者', '交易所', '行情终端'], steps: [
+    [0, 1, '9:15–9:20 申报，可撤单'],
+    [1, 2, '发布虚拟参考价与匹配量', '这段时间的撤单使参考价有时与最终开盘价差距较大。'],
+    [0, 1, '9:20–9:25 申报，不可撤单'],
+    [1, 1, '9:25 计算开盘价，一次撮合'],
+    [1, 2, '发布开盘价与成交量'],
+    [1, 1, '9:30 进入连续竞价']
+  ]},
+  widgets: [['开盘价计算：成交量最大原则', 'auction']],
+  money: '这是机制而不是参与者。对参与者来说，开盘和收盘集合竞价集中了大量成交，指数基金和收盘价相关的订单在这里执行。',
+  risk: '集合竞价阶段的大额订单会显著影响开盘价；收盘价被用于估值和衍生品结算，因此是监管关注的操纵点。',
+  terms: [['虚拟参考价', '假设此刻结束集合竞价时的成交价。'], ['最大成交量原则', '选择使成交量最大的价格。'], ['未匹配量', '在开盘价上还没成交的买或卖数量。']],
+  related: ['exchange', 'buyside', 'retail'] },
+
+{ id: 'mm', g: 'X', name: '做市商', en: 'Market Maker', role: '流动性提供者', auto: '全自动程序',
+  one: '持续同时挂出买价和卖价，赚取买卖价差，同时控制手里的库存风险。',
+  does: [
+    '做市商的收入是买卖价差和交易所的做市激励。主要成本有两项：逆向选择（成交对手掌握更多信息，成交后价格往不利方向走）和库存价格波动。',
+    '报价程序围绕一个“保留价格”报价：持有多头库存时把保留价格下移，更容易卖出、更难买入；波动率上升或订单流变得单边时加宽价差。',
+    '期权做市商同时对上百个行权价、到期日报价，按 Delta、Vega 等敞口用标的或其他期权对冲。中国的科创板股票、ETF、期货和期权都有做市商制度。'
+  ],
+  flow: { lanes: ['做市程序', '交易所', '其他交易者', '对冲市场'], steps: [
+    [0, 0, '计算公允价、库存、波动率'],
+    [0, 1, '挂出双边报价'],
+    [2, 1, '吃掉做市商的卖单'],
+    [1, 0, '成交回报：库存减少'],
+    [0, 0, '保留价格上移，重新计算报价'],
+    [0, 3, '库存超限时对冲', '常用股指期货、ETF 或相关性高的品种。'],
+    [0, 1, '撤旧单，挂新报价']
+  ]},
+  widgets: [['报价模型：库存如何改变报价', 'mm']],
+  money: '价差收入 × 成交次数，加上交易所的做市激励或手续费减免。',
+  risk: '逆向选择、库存风险、系统故障时的挂单风险（需要“紧急撤全部单”的开关）。',
+  cn: [
+    ['2022-07', '上交所科创板做市细则落地。做市商需净资本持续不低于 100 亿元等条件；做市持股原则上不超过公司股份的 5%。'],
+    ['2022-07', '科创板股票按换手率、成交额、波动性分为高、中、低三类，最大买卖价差分别为 1.5%、2%、3%，最小报价金额 10 万元；参与率按秒采样统计。'],
+    ['', '股价达到涨跌停时，做市商可以只做单边报价。以上数值来自 2022 年细则和指南，使用前应以上交所最新版本为准。']
+  ],
+  terms: [['买卖价差', '卖价 − 买价，做市商的毛收入来源。'], ['保留价格', '考虑库存后，做市商认为买卖无差别的价格。'], ['逆向选择', '与信息更多的交易者成交造成的损失。'], ['库存风险', '持有头寸期间价格变动的损失。'], ['报价义务', '最大价差、最小报价量、在线时间比例等要求。']],
+  src: [['新浪财经：科创板做市交易制度落地，最大买卖价差可增加至 1.5%', 'https://finance.sina.com.cn/stock/kechuangban/2022-07-17/doc-imizirav3968338.shtml']],
+  related: ['hft', 'etf', 'exchange'] },
+
+{ id: 'hft', g: 'X', name: '高频交易', en: 'High-Frequency Trading', role: '流动性提供者 / 使用者', auto: '全自动程序',
+  one: '依靠极低的系统延迟，在微秒级时间内根据订单簿变化下单和撤单，持仓时间很短。',
+  does: [
+    '常见策略有三类：被动做市（排在同价位队列的前面，赚价差和返佣）；跨市场延迟套利（同一资产在两个市场的价格更新有先后）；订单簿短期预测（根据买一卖一挂单量的不平衡预测下一跳价格）。',
+    '基础设施决定胜负：服务器放在交易所机房（托管），网卡绕过操作系统内核直接收包，用 FPGA 芯片解码行情和生成订单，跨城市之间用微波链路代替光纤。',
+    '研发团队的日常工作是测量延迟、分析每笔成交在队列中的位置、复盘被“扫单”的时刻，并调整参数。'
+  ],
+  flow: { lanes: ['交易所行情', '服务器 / FPGA', '风控模块', '交易所网关'], steps: [
+    [0, 1, '行情组播包到达网卡'],
+    [1, 1, '解码，更新本地订单簿'],
+    [1, 1, '信号：不平衡度越过阈值'],
+    [1, 2, '生成订单'],
+    [2, 2, '检查持仓、频率、价格限制'],
+    [2, 3, '发出订单'],
+    [3, 1, '确认 / 成交回报']
+  ]},
+  widgets: [['程序界面示意：延迟与信号', 'hft']],
+  money: '单笔利润极小，靠极高的笔数。收益与成交量、价差和交易所费用结构直接相关。',
+  risk: '技术投入大且竞争是零和的：比对手慢一点就会被逆向选择。系统失控时损失快速累积。',
+  cn: [
+    ['2024-05-15', '证监会发布《证券市场程序化交易管理规定（试行）》，要求程序化交易报告，对高频交易额外报告、差异化收费。'],
+    ['2025-04-03', '沪深北交易所发布程序化交易管理实施细则，2025-07-07 起施行。'],
+    ['认定标准', '单个账户每秒申报、撤单最高笔数达 300 笔以上，或单日申报、撤单最高笔数达 20000 笔以上，认定为高频交易。'],
+    ['额外要求', '高频交易者需报告服务器所在地、系统测试报告和系统故障应急方案；交易所可以收取更高的费用。']
+  ],
+  terms: [['tick-to-trade', '从收到行情到发出订单的时间。'], ['托管', '把服务器放在交易所机房内，缩短物理距离。'], ['FPGA', '可编程芯片，用硬件电路完成解码和下单逻辑。'], ['队列位置', '同一价位上自己订单前面还有多少量。'], ['订单簿不平衡', '买一量与卖一量的相对差。'], ['撤单率', '撤单笔数 ÷ 申报笔数。']],
+  src: [['21 财经：三大交易所集体发布程序化交易管理细则', 'https://m.21jingji.com/article/20250403/herald/5260fa6b11795b18e34c86f9be31416d.html'], ['新华网：程序化交易规则框架明确', 'http://www.xinhuanet.com/finance/20240516/5482518551db4dba8739d77bc83d140c/c.html']],
+  related: ['mm', 'exchange', 'quant'] },
+
+{ id: 'quant', g: 'X', name: '量化私募（多因子）', en: 'Quant · Multi-factor', role: '流动性使用者为主', auto: '全自动程序',
+  one: '用统计模型给几千只股票打分，构建高度分散的组合，持仓几天到几周。',
+  does: [
+    '研究员从行情、财务报表、分析师预期、另类数据中构造因子，检验因子值与未来收益的相关性（IC）。',
+    '把几十到几百个因子合成为每只股票的预期收益，在风险模型的约束下（行业、市值、换手率、单票权重）用优化器求出目标组合。',
+    '交易员或程序把“目标持仓 − 当前持仓”拆成订单，用执行算法下单。常见产品是指数增强（目标跑赢中证 500、中证 1000 等指数）和市场中性（股票多头加股指期货空头）。'
+  ],
+  flow: { lanes: ['数据', '研究', '组合优化', '执行', '交易所'], steps: [
+    [0, 1, '清洗行情、财报、另类数据'],
+    [1, 1, '构造因子，检验 IC'],
+    [1, 2, '合成 alpha 打分'],
+    [2, 2, '带约束优化，得到目标权重'],
+    [2, 3, '目标持仓 − 当前持仓 = 订单'],
+    [3, 4, '算法拆单下单'],
+    [4, 3, '成交回报'],
+    [3, 1, '收盘后：归因与监控']
+  ]},
+  widgets: [['策略示意：组合的因子暴露', 'quant']],
+  money: '管理费 + 业绩报酬。收益来源是大量小幅、统计上稳定的定价偏差。',
+  risk: '因子拥挤（大家持有相似组合，同时减仓时一起亏损）、风格突变、容量限制。',
+  terms: [['因子', '能解释或预测收益的变量，如估值、动量、质量。'], ['IC', '因子值与下期收益的相关系数。'], ['风险模型', '把组合风险分解为行业、风格和个股部分。'], ['指数增强', '紧贴基准，追求超额收益。'], ['市场中性', '用期货对冲掉市场整体涨跌。'], ['归因', '把收益拆到各个因子和选股上。']],
+  related: ['buyside', 'cta', 'hft'] },
+
+{ id: 'buyside', g: 'X', name: '公募与资管交易台', en: 'Buy-side Trading Desk', role: '流动性使用者', auto: '人工 + 系统',
+  one: '基金经理决定买什么，交易员决定怎么买，目标是降低交易对价格的冲击。',
+  does: [
+    '基金经理在 OMS（订单管理系统）下指令，例如“买入 100 万股，今日完成”。合规系统自动检查持仓比例、禁投名单。',
+    '交易员在 EMS（执行管理系统）选择执行方式：交给券商的算法（VWAP、TWAP、POV、IS），找对手方做大宗交易，或者分多日执行。',
+    '收盘后用 TCA（交易成本分析）把实际成交均价与基准（下单时价格、全天 VWAP）比较，评估交易员和券商算法。'
+  ],
+  flow: { lanes: ['基金经理', '合规', '交易员 · EMS', '券商算法', '交易所'], steps: [
+    [0, 1, '下单指令'],
+    [1, 2, '检查投资比例、禁投名单'],
+    [2, 2, '选择算法与参数'],
+    [2, 3, '母单：VWAP，今日完成'],
+    [3, 4, '按成交量曲线发送子单'],
+    [4, 3, '子单成交'],
+    [3, 2, '实时进度、均价、偏离'],
+    [2, 0, '完成，TCA 报告']
+  ]},
+  widgets: [['交易界面示意：VWAP 与 TWAP 拆单', 'vwap']],
+  money: '交易台本身不以盈利为目标，考核的是执行成本相对基准的节省。',
+  risk: '信息泄露（大单被他人察觉而抢先交易）、执行时间过长带来的价格风险。',
+  terms: [['OMS', '订单管理系统：指令、持仓、合规。'], ['EMS', '执行管理系统：选择算法、监控执行。'], ['母单 / 子单', '大单拆成的许多小单。'], ['VWAP', '按市场成交量分布拆单，目标是全天成交量加权均价。'], ['TWAP', '按时间平均拆单。'], ['POV', '按市场成交量的固定比例跟随。'], ['TCA', '交易成本分析。']],
+  related: ['quant', 'block', 'auction'] },
+
+{ id: 'retail', g: 'X', name: '个人投资者', en: 'Retail Investor', role: '流动性使用者', auto: '以人工为主',
+  one: '通过券商 App 下单。A 股实行 T+1：当天买入的股票下一个交易日才能卖出。',
+  does: [
+    '个人在券商开户，资金在银行三方存管账户中。下单后券商柜台冻结资金、检查权限（如科创板、创业板需要单独开通），再把订单报给交易所。',
+    '成交后股票当天记入账户，下一交易日可以卖出；卖出所得资金当天可以再买，次日可以转出。',
+    '主板买入以 100 股为一手；科创板单笔申报不少于 200 股，超过部分以 1 股为单位递增。'
+  ],
+  flow: { lanes: ['个人投资者', '券商 App · 柜台', '交易所', '中国结算'], steps: [
+    [0, 1, '输入代码、价格、数量'],
+    [1, 1, '冻结资金，检查权限'],
+    [1, 2, '报盘'],
+    [2, 2, '撮合'],
+    [2, 1, '成交回报'],
+    [2, 3, '日终成交数据'],
+    [3, 3, 'T 日清算，T+1 交收'],
+    [3, 1, '更新持仓与资金']
+  ]},
+  money: '无固定收入来源，收益来自价格变化和分红；成本是佣金、卖出时的印花税（2023-08-28 起为 0.05%）和过户费。',
+  risk: '信息和执行速度上处于劣势；集中持仓和杠杆（融资融券）放大波动。',
+  terms: [['T+1', '当日买入次日才能卖出。'], ['三方存管', '客户资金存放在银行，券商不能挪用。'], ['两融', '融资买入和融券卖出。'], ['印花税', '卖出时按成交金额征收。']],
+  related: ['exchange', 'auction', 'ipo'] },
+
+{ id: 'block', g: 'X', name: '大宗交易', en: 'Block Trade', role: '大额交易双方', auto: '以人工为主',
+  one: '单笔数量或金额达到门槛的交易。买卖双方先私下谈好价格和数量，再通过交易所的大宗交易系统确认成交。',
+  does: [
+    '主要用途是股东减持、机构大额调仓。直接在连续竞价中卖出几百万股会把价格压低，大宗交易让双方以协商价格一次完成。',
+    '沪深大宗交易有协议大宗（盘中双方申报一致即成交，价格在当日涨跌幅范围内）和盘后定价大宗（按收盘价或当日成交量加权平均价成交）。成交信息在收盘后公布。',
+    '卖方券商的机构销售负责找买方，买方通常要求折价。减持类大宗交易受减持规则的数量和锁定期约束。'
+  ],
+  flow: { lanes: ['卖方（股东）', '卖方券商', '买方券商', '买方机构', '交易所大宗系统'], steps: [
+    [0, 1, '委托寻找买方'],
+    [1, 2, '询价、谈折扣'],
+    [2, 3, '转达报价'],
+    [3, 2, '确认价格与数量'],
+    [1, 4, '卖方申报（含约定号）'],
+    [2, 4, '买方申报'],
+    [4, 4, '双方申报一致，确认成交'],
+    [4, 0, '收盘后公布成交信息']
+  ]},
+  money: '卖方券商收佣金；买方以折价买入，若持有期内价格回到市价附近即获利。',
+  risk: '买方有持有期限制时承担价格下跌风险；交易信息公布后可能引起市场对股东减持的反应。',
+  terms: [['协议大宗', '双方约定价格和数量后在盘中申报成交。'], ['盘后定价大宗', '收盘后按收盘价或 VWAP 成交。'], ['折价率', '成交价相对当日收盘价的折扣。'], ['暗池', '海外市场中不公开显示订单的交易场所。']],
+  related: ['buyside', 'vcpe', 'exchange'] },
+
+/* ---------- 场外与批发 ---------- */
+{ id: 'ib-dealer', g: 'O', name: '银行间债券与利率交易商', en: 'Interbank Dealer', role: '交易商 / 做市', auto: '人工 + 系统',
+  one: '银行和券商自营在银行间市场以询价、做市的方式交易债券、回购和利率互换。',
+  does: [
+    '中国银行间市场由外汇交易中心（CFETS）提供交易平台。交易方式包括对话报价（双方点对点谈价）、做市商双边报价、请求报价（RFQ），以及 X-Bond 等匿名点击成交。',
+    '交易员负责某一类券种（如国债、政策性金融债）的报价和库存，研究员提供利率观点。机构客户通过 RFQ 同时向多家交易商询价，选择最优报价成交。',
+    '成交后债券在中央结算公司或上海清算所托管，通常券款对付（DVP）；利率互换可以在上海清算所集中清算。'
+  ],
+  flow: { lanes: ['客户（基金）', '交易商 A', '交易商 B', '交易商 C', 'CFETS · 清算所'], steps: [
+    [0, 1, 'RFQ：买入 5 亿 某国开债'],
+    [0, 2, 'RFQ'],
+    [0, 3, 'RFQ'],
+    [1, 0, '回价：收益率 2.105%'],
+    [2, 0, '回价：收益率 2.100%'],
+    [3, 0, '回价：收益率 2.110%'],
+    [0, 3, '选收益率最高的报价成交', '买方希望收益率高（价格低），所以选 C。'],
+    [3, 4, '成交确认，券款对付']
+  ]},
+  money: '买卖价差、持有债券的票息与融资成本之差（carry）、利率判断带来的资本利得。',
+  risk: '利率风险（久期）、信用风险、流动性风险；做市库存需要用国债期货或利率互换对冲。',
+  terms: [['RFQ', '请求报价：向多家交易商同时询价。'], ['X-Bond', 'CFETS 的匿名点击交易系统。'], ['DVP', '券款对付：债券和资金同时交割。'], ['回购', '以债券质押借入资金。'], ['IRS', '利率互换，常见挂钩 FR007 或 Shibor。'], ['DV01', '收益率变化 1 个基点时头寸价值的变化。']],
+  related: ['bond', 'pboc', 'fx', 'ccp'] },
+
+{ id: 'fx', g: 'O', name: '外汇交易商', en: 'FX Dealer', role: '交易商', auto: '人工 + 系统',
+  one: '银行在银行间外汇市场和企业客户之间做人民币与外币的即期、远期、掉期交易。',
+  does: [
+    '境内：CFETS 银行间外汇市场有竞价（匿名撮合）和询价两种方式，做市商提供双边报价；人民币对美元中间价每天由报价行报价后形成。',
+    '境外：EBS、LSEG Matching 等电子平台撮合银行间交易；大银行通过单银行平台向客户持续推送报价，部分流动性提供方在成交前保留“最后确认”（last look）。',
+    '银行外汇交易员管理本行头寸：销售为企业客户报价并加点差，交易员在银行间市场平盘对冲。'
+  ],
+  flow: { lanes: ['企业客户', '银行销售', '银行交易员', '银行间市场'], steps: [
+    [0, 1, '询价：3 个月后卖出 1000 万美元'],
+    [1, 2, '请求远期报价'],
+    [2, 2, '即期价 + 远期点'],
+    [2, 1, '交易员报价'],
+    [1, 0, '对客报价（含销售点差）'],
+    [0, 1, '确认成交'],
+    [2, 3, '在银行间市场平盘']
+  ]},
+  money: '对客点差、做市价差和头寸管理收益。',
+  risk: '汇率跳动时的头寸风险；客户违约（远期交易的信用敞口）。',
+  terms: [['即期', '两个工作日内交割。'], ['远期点', '远期汇率与即期汇率之差，由两种货币的利差决定。'], ['掉期', '一买一卖两笔不同期限的交易组合。'], ['中间价', '每日人民币汇率的基准。'], ['平盘', '把客户交易产生的头寸在市场上对冲掉。'], ['last look', '流动性提供方在成交前的最后确认窗口。']],
+  related: ['ib-dealer', 'pboc', 'commodity'] },
+
+/* ---------- 大宗商品 ---------- */
+{ id: 'commodity', g: 'C', name: '大宗商品贸易商交易员', en: 'Physical Commodity Trader', role: '实货中间商', auto: '以人工为主',
+  one: '买卖实货（原油、金属、农产品），同时用期货和掉期对冲价格风险。利润来自地点、时间、品质上的价差和物流安排。',
+  does: [
+    '交易员按品种和区域分组，负责一条贸易链：从生产商长约或现货采购，安排租船、仓储、混兑，再卖给炼厂、冶炼厂或终端用户。',
+    '实货合同大多按浮动价格结算，例如“提单日前后各 5 个工作日的 Dated Brent 均价 + 1.20 美元”。交易员实际谈判的是升贴水（这个 1.20 美元），价格本身的风险用期货或掉期对冲。',
+    '定价时用到的价格评估：Platts 等价格报告机构在每天收盘前的一段“窗口”里收集公开的买价、卖价和成交，形成评估价（MOC 方法）。贸易公司的交易员会在窗口里报价，因为这个价格被大量合同引用。',
+    '另一种常见竞价是招标：产油国、国家储备机构、大型炼厂发布招标书，贸易商在截止时间前提交报价，买方按价格和条件选择。'
+  ],
+  flow: { lanes: ['生产商', '贸易商交易员', '运营 · 船运', '期货 · 掉期市场', '买方（炼厂）'], steps: [
+    [0, 1, '采购：Brent + 1.20 美元'],
+    [1, 3, '卖出期货，锁定价格'],
+    [1, 2, '租船、保险、信用证'],
+    [1, 1, '寻找买方，参加招标'],
+    [1, 4, '售出：Brent + 1.85 美元'],
+    [2, 4, '装运、交付，交提单'],
+    [1, 3, '定价期结束，平掉对冲']
+  ]},
+  widgets: [['价格评估窗口：一次 Dubai partial 窗口（虚构）', 'platts'], ['实货 + 期货：对冲后剩下什么', 'oilHedge']],
+  money: '升贴水差、地点价差（运费套利）、时间价差（储存套利，期货远月高于近月时囤货）、混兑带来的品质价差。',
+  risk: '对冲不完全（基差风险）、交易对手违约、运输和品质事故、贸易融资和保证金占用。',
+  cn: [
+    ['Dubai / Oman', 'Platts 在新加坡时间 16:00–16:30 进行 Dubai partials 评估，16:30:00 的价值为评估价。'],
+    ['partial', '一个 partial 为 25,000 桶；同一对买卖方累计 20 个 partial（500,000 桶）即转为一整船实货交割，可交付 Dubai、Oman、Upper Zakum、Al-Shaheen 等，Murban 需加品质升水。'],
+    ['欧洲', 'Dated Brent 和欧洲成品油的评估时点为伦敦时间 16:30。'],
+    ['评估规则', '收盘时评估价应高于仍然有效的确定买价、低于仍然有效的确定卖价。具体时间与规则以 S&P Global 最新方法论文件为准。']
+  ],
+  terms: [['升贴水', '实货价格相对基准价格的差。'], ['定价期', '计算浮动价格所用的日期区间。'], ['Dated Brent', '北海即期原油的评估价。'], ['partial', 'Dubai 窗口中 25,000 桶的标准单位。'], ['MOC', '收盘前窗口评估方法。'], ['信用证', '银行对付款的担保，贸易融资常用。']],
+  src: [['S&P Global：Platts Dubai crude oil price assessment', 'https://www.spglobal.com/commodityinsights/en/our-methodology/price-assessments/oil/dubai-crude-oil-price-assessments'], ['Oxford Institute for Energy Studies：Oil Markets in Transition and the Dubai Crude Oil Benchmark', 'https://www.oxfordenergy.org/wpcms/wp-content/uploads/2014/10/Oil-Markets-in-Transition-and-the-Dubai-Crude-Oil-Benchmark.pdf']],
+  related: ['hedger', 'ring', 'cta', 'fx'] },
+
+{ id: 'hedger', g: 'C', name: '产业套期保值者', en: 'Commercial Hedger', role: '风险转移方', auto: '人工 + 系统',
+  one: '冶炼厂、榨油厂、贸易商用期货锁定未来的买卖价格。套保后真正面对的风险是基差，而不是价格本身。',
+  does: [
+    '例：铜冶炼厂每月产出精铜，担心几个月后价格下跌，就在上期所卖出对应吨数的期货。实际卖出现货时，买回期货平仓。现货少卖的钱由期货盈利补回。',
+    '剩下的风险是基差（现货价 − 期货价）的变化。基差走强（变大）对卖出套保有利，走弱不利。',
+    '国内铜、大豆等现货贸易常用“点价”：双方约定价格 = 某期货合约价格 + 升贴水，买方在约定期限内选择时点按当时的期货价格确定最终价格，卖方同时平掉对应的期货空头。'
+  ],
+  flow: { lanes: ['冶炼厂', '期货公司', '期货交易所', '现货买方'], steps: [
+    [0, 1, '开立套保账户'],
+    [1, 2, '卖出期货 1000 吨'],
+    [0, 3, '签点价合同：期货 + 升贴水'],
+    [3, 0, '通知点价'],
+    [0, 2, '按点价时刻买入平仓'],
+    [0, 3, '交货、开票']
+  ]},
+  widgets: [['套保计算：价格变化与基差变化', 'basis']],
+  money: '套保本身不追求盈利，目标是锁定加工利润。部分企业也会在套保额度内主动管理基差。',
+  risk: '基差风险、保证金追加带来的资金压力、套保头寸与现货不匹配（超量变成投机）。',
+  terms: [['基差', '现货价 − 期货价。'], ['卖出套保', '持有或将产出现货的一方卖出期货。'], ['点价', '买方选择时点确定期货部分价格。'], ['升贴水', '点价合同中固定的差价部分。'], ['保证金', '期货持仓需要缴纳并逐日结算的资金。']],
+  related: ['commodity', 'ring', 'ccp'] },
+
+{ id: 'ring', g: 'C', name: 'LME 圈内公开喊价', en: 'LME Ring · Open Outcry', role: '价格形成场所', auto: '以人工为主',
+  one: '伦敦金属交易所保留的场内喊价交易，形成全球金属实货合同常用的官方价格。',
+  does: [
+    'Ring 按金属分成多个 5 分钟交易时段，会员交易员坐成一圈，用口头报价和手势成交。伦敦时间 11:40 开始，17:00 结束。',
+    '第二节 Ring 中最后的买价和卖价形成 LME 官方价（Official Price）；其中最后的现货卖价是官方结算价，大量实货长约按它结算。',
+    '收盘价（Closing Price）不再来自 Ring，而是由电子盘 LMEselect 在指定时段按 VWAP 或最后成交价确定，17:50 起发布。'
+  ],
+  flow: { lanes: ['客户（冶炼厂）', 'Ring 会员', 'Ring 场内', 'LME'], steps: [
+    [0, 1, '委托：按官方价买入'],
+    [1, 2, '第二节 Ring：铜 5 分钟'],
+    [2, 2, '口头报价、成交'],
+    [2, 3, '铃响时的最后买卖报价'],
+    [3, 3, '发布官方价与结算价'],
+    [3, 0, '实货合同按官方价结算']
+  ]},
+  money: 'Ring 会员收取经纪佣金，并为客户提供按官方价成交的服务。',
+  risk: 'Ring 规模在缩小。2020 年 3 月因疫情暂停，2021 年 LME 曾提议永久关闭，因实货用户反对改为保留并重开。',
+  cn: [
+    ['2024-08', '法国兴业银行退出后，Ring 会员剩 7 家。LME 表示，若会员少于 6 家，或第二节 Ring 成交量降至上一年的 75% 以下，将关闭 Ring。'],
+    ['价格', '官方价来自 Ring；收盘价由 LMEselect 电子盘确定。']
+  ],
+  terms: [['Ring', '场内公开喊价交易圈。'], ['Official Price', '第二节 Ring 的最后买卖报价。'], ['Cash / 3M', '现货与三个月期合约，LME 最活跃的两个日期。'], ['Kerb', 'Ring 之后所有金属同时交易的时段。'], ['LMEselect', 'LME 的电子交易平台。']],
+  src: [['LME：Closing Prices', 'https://www.lme.com/market-data/reports-and-data/lme-closing-prices'], ['MINING.COM：LME open-outcry trade lives on as SocGen quit', 'https://www.mining.com/web/lme-open-outcry-trade-lives-on-as-socgen-quit-sparks-no-rush-for-exits/']],
+  related: ['hedger', 'commodity', 'auction'] },
+
+{ id: 'cta', g: 'C', name: 'CTA 趋势跟踪', en: 'Managed Futures · Trend Following', role: '趋势交易者', auto: '全自动程序',
+  one: '在多个期货品种上按价格趋势做多或做空，用波动率决定每个品种的仓位。',
+  does: [
+    '典型规则：短期均线高于长期均线时做多，低于时做空。每个品种的仓位与其波动率成反比，让各品种对组合的风险贡献接近。',
+    '组合覆盖股指、国债、商品和外汇期货，几十个品种同时运行。单个品种的胜率常常不到一半，盈利来自少数持续时间长的趋势。',
+    '国内 CTA 私募还常做截面策略：按期限结构（近远月价差）或动量对品种排序，做多排名靠前的，做空排名靠后的。'
+  ],
+  flow: { lanes: ['行情', '信号', '风险预算', '执行', '期货交易所'], steps: [
+    [0, 1, '日线收盘价'],
+    [1, 1, '计算 20 日与 60 日均线'],
+    [1, 2, '方向：做多或做空'],
+    [2, 2, '仓位 = 风险预算 ÷ 波动率'],
+    [2, 3, '目标手数 − 当前手数'],
+    [3, 4, '下单；主力合约换月']
+  ]},
+  widgets: [['策略示意：均线信号与持仓', 'cta']],
+  money: '管理费 + 业绩报酬；收益在市场出现持续单边行情时集中产生。',
+  risk: '震荡行情中反复开平仓的磨损；长时间回撤。',
+  terms: [['均线', '过去 N 天收盘价的平均。'], ['波动率目标', '按目标风险水平调整仓位。'], ['换月', '临近到期时把持仓移到下一个合约。'], ['期限结构', '同一品种不同到期月份的价格关系。'], ['回撤', '净值从高点下跌的幅度。']],
+  related: ['quant', 'hedger', 'commodity'] },
+
+/* ---------- 基础设施与政策 ---------- */
+{ id: 'pboc', g: 'I', name: '央行公开市场操作', en: 'PBOC Open Market Operations', role: '政策操作方', auto: '人工 + 系统',
+  one: '人民银行与一级交易商做逆回购等操作，向银行体系投放或回笼资金，并通过操作利率传递政策利率。',
+  does: [
+    '一级交易商是有资格直接参与公开市场操作的机构，以大中型银行为主。逆回购是央行买入一级交易商质押的债券、提供资金，到期后交易商还款。',
+    '2024 年 7 月 22 日起，7 天期逆回购改为固定利率、数量招标，成为主要政策利率。',
+    '2026 年 10 月 30 日公告、11 月 2 日起：每个工作日开展隔夜逆回购，固定利率、数量招标，利率 1.25%。7 天期逆回购改为固定数量、利率招标、多重价位中标，主要在税期、月末等时点开展。原先以 7 天期利率加减点的工具（临时正逆回购等）改为以隔夜逆回购利率加减点，幅度不变。'
+  ],
+  flow: { lanes: ['人民银行', '一级交易商', '托管结算机构'], steps: [
+    [0, 0, '公告当日操作'],
+    [1, 0, '招标时段内投标'],
+    [0, 0, '确定中标量与利率'],
+    [0, 1, '公布结果'],
+    [1, 2, '质押债券'],
+    [0, 1, '资金划入'],
+    [1, 0, '到期还款，解除质押']
+  ]},
+  example: { caption: '2026-11-02 起的两种逆回购', head: ['', '隔夜逆回购', '7 天期逆回购'], rows: [
+    ['开展频率', '每个工作日', '主要在税期、月末等时点'],
+    ['招标方式', '固定利率、数量招标', '固定数量、利率招标'],
+    ['中标方式', '按固定利率', '多重价位（各按自己的投标利率）'],
+    ['利率', '1.25%', '由投标决定'],
+    ['首次操作', '2026-11-02：投标 5410 亿元，全额中标', '']
+  ]},
+  money: '不以盈利为目标。市场参与者关注操作量和利率，以判断货币政策方向。',
+  risk: '对市场参与者来说：资金面在税期、月末收紧时，短端利率波动加大。',
+  cn: [
+    ['2024-07-22', '7 天期逆回购改为固定利率、数量招标，利率由 1.80% 下调至 1.70%。'],
+    ['2026-10-30', '公告优化短端利率调控机制，11 月 2 日起执行，主要政策利率从 7 天期逆回购利率切换为隔夜逆回购利率。']
+  ],
+  terms: [['逆回购', '央行买入质押债券、投放资金。'], ['一级交易商', '直接与央行交易的机构。'], ['数量招标', '利率固定，交易商报数量。'], ['利率招标', '数量固定，交易商报利率。'], ['多重价位', '各中标者按各自投标利率成交。'], ['利率走廊', '央行用上下限工具约束短期市场利率的范围。']],
+  src: [['新华网：央行每个工作日开展隔夜逆回购操作招标', 'https://www.news.cn/fortune/20261030/15e4b60a62d6408e867fa278e32f1d5d/c.html'], ['新华网：“换锚”落地 央行开展 5410 亿元隔夜逆回购操作', 'https://www.news.cn/fortune/20261102/25dc995cacf94be78df410fe0fbaf033/c.html'], ['中国经济网：7 天期逆回购操作利率调整为 1.70%', 'http://www.ce.cn/xwzx/gnsz/gdxw/202407/22/t20240722_39077213.shtml']],
+  related: ['ib-dealer', 'bond', 'fx'] },
+
+{ id: 'ccp', g: 'I', name: '清算所与登记结算', en: 'CCP · Clearing & Settlement', role: '基础设施', auto: '全自动系统',
+  one: '在成交之后计算每家机构应交付多少资金和证券；在中央对手方模式下，保证交收完成。',
+  does: [
+    '中央对手方（CCP）在成交后成为“买方的卖方、卖方的买方”。每家会员只需要与 CCP 结算一个净额，而不必面对成百上千个交易对手。',
+    'A 股由中国结算担任中央对手方：T 日日终完成清算，证券当日过户，资金在 T+1 日完成交收。银行间市场由上海清算所为利率互换和部分债券提供集中清算；期货交易所自身承担 CCP 职能，每日按结算价逐日盯市。',
+    '会员违约时按顺序用资源弥补损失：违约方保证金 → 违约方清算基金 → CCP 自有资金 → 其他会员的清算基金。这个顺序称为违约瀑布。'
+  ],
+  flow: { lanes: ['会员 A（买方）', '中央对手方', '会员 B（卖方）'], steps: [
+    [0, 2, '交易所内成交'],
+    [1, 1, '合约替代：CCP 介入双方之间'],
+    [1, 1, '多边净额：每家只算一个净额'],
+    [1, 0, '通知应付资金'],
+    [1, 2, '通知应交证券'],
+    [0, 1, '交付资金'],
+    [2, 1, '交付证券'],
+    [1, 0, '交付证券'],
+    [1, 2, '交付资金']
+  ]},
+  money: '收取结算费、托管费；CCP 的收入不依赖价格方向。',
+  risk: '大会员违约且损失超过违约瀑布前几层，风险就会传到其他会员。',
+  terms: [['中央对手方', '在买卖双方之间担任交易对手的机构。'], ['多边净额', '把所有交易轧差成每家一个净额。'], ['DVP', '券款对付。'], ['逐日盯市', '每天按结算价计算盈亏并划转保证金。'], ['违约瀑布', '违约损失的分担顺序。']],
+  related: ['exchange', 'ib-dealer', 'retail'] }
+];
+
+const byId = Object.fromEntries(E.map(e => [e.id, e]));
+const groupName = Object.fromEntries(GROUPS.map(g => [g[0], g[1]]));
+const fmt = (n, d = 0) => Number(n).toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d });
+const $ = s => document.querySelector(s);
+
+/* ---------- 设置（记住在本机） ---------- */
+const PREF_KEY = 'market-atlas-prefs';
+let prefs = { pal: 'oat', font: 'normal', theme: 'system' };
+try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); } catch (e) {}
+function applyPrefs() {
+  document.documentElement.setAttribute('data-palette', prefs.pal);
+  document.documentElement.setAttribute('data-font', prefs.font);
+  if (prefs.theme === 'system') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', prefs.theme);
+  document.querySelectorAll('[data-theme-pick]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themePick === prefs.theme)));
+  document.querySelectorAll('[data-pal]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pal === prefs.pal)));
+  document.querySelectorAll('[data-font]').forEach(b => { if (b.tagName === 'BUTTON') b.setAttribute('aria-pressed', String(b.dataset.font === prefs.font)); });
+  try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {}
+}
+document.querySelectorAll('button[data-pal]').forEach(b => b.addEventListener('click', () => { prefs.pal = b.dataset.pal; applyPrefs(); }));
+document.querySelectorAll('button[data-font]').forEach(b => b.addEventListener('click', () => { prefs.font = b.dataset.font; applyPrefs(); }));
+document.querySelectorAll('button[data-theme-pick]').forEach(b => b.addEventListener('click', () => { prefs.theme = b.dataset.themePick; applyPrefs(); }));
+applyPrefs();
+
+/* ---------- 目录 ---------- */
+function buildIndex() {
+  let h = '<div><ul><li><a href="#overview" data-id="overview">总览：市场地图</a></li></ul></div>';
+  let opts = '<option value="overview">总览：市场地图</option>';
+  for (const [g, gname] of GROUPS) {
+    const items = E.filter(e => e.g === g);
+    h += `<div><h3>${gname}</h3><ul>${items.map(e => `<li><a href="#${e.id}" data-id="${e.id}">${e.name}</a></li>`).join('')}</ul></div>`;
+    opts += `<optgroup label="${gname}">${items.map(e => `<option value="${e.id}">${e.name}</option>`).join('')}</optgroup>`;
+  }
+  $('#index').innerHTML = h;
+  $('#picker').innerHTML = opts;
+  $('#picker').addEventListener('change', ev => { location.hash = ev.target.value; });
+}
+
+/* ---------- 泳道图（交易过程） ---------- */
+function laneSvg(f) {
+  const n = f.lanes.length, LW = 158, PX = 40, HH = 48, SH = 46;
+  const W = PX + n * LW + 8, H = HH + 22 + f.steps.length * SH;
+  const cx = i => PX + LW * i + LW / 2;
+  let s = `<svg class="lane" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="交易步骤图：${f.lanes.join('、')}">`;
+  s += '<defs><marker id="ah-lane" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,1 L9,5 L0,9 z"/></marker></defs>';
+  f.steps.forEach((st, i) => { const y = HH + 26 + i * SH; s += `<line class="ln-row" x1="30" x2="${W - 4}" y1="${y + SH / 2}" y2="${y + SH / 2}"/>`; });
+  f.lanes.forEach((l, i) => {
+    s += `<line class="ln-l" x1="${cx(i)}" x2="${cx(i)}" y1="40" y2="${H - 6}"/>`;
+    s += `<rect class="ln-h" x="${cx(i) - 70}" y="6" width="140" height="34" rx="6"/><text x="${cx(i)}" y="28" text-anchor="middle">${l}</text>`;
+  });
+  f.steps.forEach((st, i) => {
+    const [a, b, label] = st; const y = HH + 26 + i * SH;
+    s += `<circle class="ln-nc" cx="16" cy="${y}" r="10"/><text class="ln-n" x="16" y="${y + 4}" text-anchor="middle">${i + 1}</text>`;
+    if (a === b) {
+      s += `<rect class="ln-s" x="${cx(a) - 6}" y="${y - 6}" width="12" height="12" rx="2"/>`;
+      const last = a === n - 1 && n > 1;
+      s += `<text class="halo" x="${last ? cx(a) - 14 : cx(a) + 14}" y="${y + 4.5}" text-anchor="${last ? 'end' : 'start'}">${label}</text>`;
+    } else {
+      const dir = b > a ? 1 : -1;
+      s += `<line class="ln-a" x1="${cx(a) + dir * 6}" x2="${cx(b) - dir * 8}" y1="${y}" y2="${y}" marker-end="url(#ah-lane)"/>`;
+      s += `<circle cx="${cx(a)}" cy="${y}" r="3" style="fill:var(--accent)"/>`;
+      s += `<text class="halo" x="${(cx(a) + cx(b)) / 2}" y="${y - 8}" text-anchor="middle">${label}</text>`;
+    }
+  });
+  return s + '</svg>';
+}
+
+/* ---------- 页面 ---------- */
+const ILLO = `<svg class="illo" viewBox="0 0 200 140" aria-hidden="true" focusable="false">
+  <ellipse cx="100" cy="126" rx="58" ry="6" style="fill:var(--illo-fill)"/>
+  <g style="fill:none;stroke:var(--illo-ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round">
+    <path d="M100 30v90M76 120h48M100 30l-2-8h4z"/>
+    <path d="M44 44h112"/>
+    <path d="M52 44l-20 40M52 44l20 40M148 44l-20 40M148 44l20 40"/>
+    <path d="M30 84a22 10 0 0 0 44 0z" style="fill:var(--illo-fill)"/>
+    <path d="M126 84a22 10 0 0 0 44 0z" style="fill:var(--illo-fill)"/>
+  </g></svg>`;
+
+function overview() {
+  const cols = GROUPS.slice(0, 4).map(([g, name, what]) => `<div class="col"><h3>${name}</h3><p class="what">${what}</p><ul>${E.filter(e => e.g === g).map(e => `<li><a href="#${e.id}">${e.name}<small>${e.role} · ${e.auto}</small></a></li>`).join('')}</ul></div>`).join('');
+  const base = `<div class="base"><h3>${GROUPS[4][1]}</h3>${E.filter(e => e.g === 'I').map(e => `<a href="#${e.id}">${e.name}</a>`).join('')}<span class="note">${GROUPS[4][2]}</span></div>`;
+  return `<div class="ov-head"><div class="head"><p class="crumb">总览</p><h1>谁在市场里，各自怎么交易</h1>
+    <p class="lead">一笔钱从企业融资开始，经过发行、交易、结算，中间有很多不同角色。这里把 20 类参与者按市场层级排好，每一类都写明具体工作流程，配一张交易过程图；程序化的参与者另附界面或策略示意，其中多数可以操作。</p></div>${ILLO}</div>
+  <section><h2>市场地图 <span class="tag">点击任一参与者查看</span></h2>
+    <div class="flowline" aria-hidden="true"><span>证券诞生</span><span>→ 连续交易</span><span>→ 机构间批发</span><span>→ 实物与期货</span></div>
+    <div class="map">${cols}${base}</div></section>
+  <section><h2>三种区分方式</h2><div class="axes">
+    <div><h3>提供还是使用流动性</h3><p>做市商、高频做市挂单等待别人来成交；资管交易台、散户、CTA 主动去成交。前者赚价差，后者付价差。</p></div>
+    <div><h3>价格怎么形成</h3><p>连续竞价逐笔撮合；集合竞价一次定价；询价和 RFQ 点对点谈价；招标按报价排序；价格评估窗口由报价机构观察买卖报价后评估。</p></div>
+    <div><h3>人工还是程序</h3><p>每个参与者页面顶部标注了自动化程度。程序化的页面带有界面或策略示意，示例数字均为虚构。</p></div>
+  </div></section>
+  <p class="note">本图鉴用于理解市场结构，不构成投资建议。具体规则会调整，页面中带日期的规则已核对至 2026-11-04，使用前请以交易所和监管机构的最新文件为准。</p>`;
+}
+
+function entry(e) {
+  const idx = E.indexOf(e), prev = E[idx - 1], next = E[idx + 1];
+  let h = `<div class="head"><p class="crumb">${groupName[e.g]}</p><h1>${e.name}</h1><p class="en">${e.en}</p>
+    <p class="lead">${e.one}</p>
+    <div class="chips"><span class="chip">角色：<b>${e.role}</b></span><span class="chip">自动化：<b>${e.auto}</b></span></div></div>`;
+  h += `<section><h2>具体怎么工作</h2><div class="prose">${e.does.map(p => `<p>${p}</p>`).join('')}</div></section>`;
+  h += `<section><h2>一笔交易怎么走 <span class="tag">${e.flow.steps.length} 步 · 横向为参与方，纵向为先后顺序</span></h2>
+    <div class="diagram">${laneSvg(e.flow)}</div>
+    <ol class="steps">${e.flow.steps.map(s => `<li>${s[2]}${s[3] ? `<span class="sn">：${s[3]}</span>` : ''}</li>`).join('')}</ol></section>`;
+  (e.widgets || []).forEach(([title, fn], i) => { h += `<section><h2>${title}</h2><div class="panel" id="w-${fn}"></div></section>`; });
+  if (e.example) {
+    const x = e.example;
+    h += `<section><h2>${x.caption}</h2><div class="panel tbl-wrap"><table><thead><tr>${x.head.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${x.rows.map(r => `<tr>${r.map((c, j) => `<td${j ? ' class="num"' : ''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`;
+  }
+  h += `<section><h2>收入与风险</h2><dl class="two"><div><dt>怎么赚钱</dt><dd>${e.money}</dd></div><div><dt>主要风险</dt><dd>${e.risk}</dd></div></dl></section>`;
+  if (e.cn) h += `<section><h2>具体规则与数字</h2><ul class="rules">${e.cn.map(([d, t]) => `<li>${d ? `<span class="d">${d}</span>` : ''}${t}</li>`).join('')}</ul></section>`;
+  h += `<section><h2>术语</h2><dl class="terms">${e.terms.map(([t, d]) => `<div><dt>${t}</dt><dd>${d}</dd></div>`).join('')}</dl></section>`;
+  h += `<section><h2>相关参与者</h2><div class="links">${e.related.map(r => `<a href="#${r}">${byId[r].name}</a>`).join('')}</div></section>`;
+  if (e.src) h += `<div class="src"><span>资料来源</span>${e.src.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`).join('')}</div>`;
+  h += `<nav class="pager" aria-label="上一个和下一个">${prev ? `<a href="#${prev.id}">上一个：${prev.name}</a>` : '<a href="#overview">返回总览</a>'}${next ? `<a href="#${next.id}">下一个：${next.name}</a>` : '<a href="#overview">返回总览</a>'}</nav>`;
+  return h;
+}
+
+function route(scroll) {
+  const id = (location.hash || '#overview').slice(1);
+  const e = byId[id];
+  $('#content').innerHTML = e ? entry(e) : overview();
+  const cur = e ? id : 'overview';
+  document.querySelectorAll('#index a').forEach(a => { if (a.dataset.id === cur) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  $('#picker').value = e ? id : 'overview';
+  if (e) (e.widgets || []).forEach(([, fn]) => W[fn]($('#w-' + fn)));
+  if (scroll) window.scrollTo(0, 0);
+}
+
+/* ================= 交互示意 ================= */
+const W = {};
+
+/* 撮合引擎 */
+W.matcher = el => {
+  const QUEUE = [
+    { id: 'B4', side: 'B', type: 'L', px: 10.04, n: 600, why: '买价 10.04 高于卖一 10.03，可以成交。先吃最低的卖价，再吃 10.04；10.04 上 S2 比 S3 先到，所以先和 S2 成交（时间优先）。' },
+    { id: 'S5', side: 'S', type: 'L', px: 10.02, n: 300, why: '卖价 10.02 高于买一 10.01，不能成交，挂在卖方 10.02，成为新的卖一。' },
+    { id: 'B5', side: 'B', type: 'L', px: 10.01, n: 200, why: '买价 10.01 低于卖一 10.02，不能成交，挂在 10.01，排在更早到达的 B1 后面。' },
+    { id: 'S6', side: 'S', type: 'M', n: 900, why: '市价卖单（最优五档即时成交剩余撤销）：从买一往下依次成交。10.01 上先成交 B1，再成交 B5。' },
+    { id: 'B6', side: 'B', type: 'L', px: 10.06, n: 800, why: '买价 10.06 高于所有卖价，从 10.02 开始逐档成交；卖方全部吃完后还剩 100 股，挂在买方 10.06。' }
+  ];
+  const init = () => ({
+    asks: [{ px: 10.03, q: [{ id: 'S4', n: 200 }] }, { px: 10.04, q: [{ id: 'S2', n: 200 }, { id: 'S3', n: 300 }] }, { px: 10.05, q: [{ id: 'S1', n: 300 }] }],
+    bids: [{ px: 10.01, q: [{ id: 'B1', n: 400 }] }, { px: 10.00, q: [{ id: 'B2', n: 600 }] }, { px: 9.99, q: [{ id: 'B3', n: 300 }] }],
+    i: 0, trades: [], touched: new Set(), msg: '这是 9:30 之后某一时刻的订单簿（虚构）。每点一次“处理下一笔订单”，引擎处理队列里的一笔新订单。'
+  });
+  let st = init();
+  const desc = o => `${o.id} ${o.type === 'M' ? '市价' : '限价'}${o.side === 'B' ? '买入' : '卖出'} ${fmt(o.n)} 股${o.type === 'L' ? ' @ ' + o.px.toFixed(2) : ''}`;
+  function proc(o) {
+    st.touched = new Set();
+    const opp = o.side === 'B' ? st.asks : st.bids;
+    let left = o.n, used = 0; const mine = [];
+    const crosses = L => o.type === 'M' || (o.side === 'B' ? L.px <= o.px + 1e-9 : L.px >= o.px - 1e-9);
+    while (left > 0 && opp.length && crosses(opp[0]) && used < 5) {
+      const L = opp[0]; st.touched.add(L.px.toFixed(2));
+      while (left > 0 && L.q.length) {
+        const r = L.q[0], x = Math.min(left, r.n);
+        r.n -= x; left -= x;
+        const t = { px: L.px, n: x, b: o.side === 'B' ? o.id : r.id, s: o.side === 'B' ? r.id : o.id };
+        st.trades.push(t); mine.push(t);
+        if (r.n === 0) L.q.shift();
+      }
+      if (!L.q.length) { opp.shift(); used++; }
+    }
+    let tail = '';
+    if (left > 0 && o.type === 'L') {
+      const own = o.side === 'B' ? st.bids : st.asks;
+      let L = own.find(l => Math.abs(l.px - o.px) < 1e-9);
+      if (!L) { L = { px: o.px, q: [] }; own.push(L); own.sort((a, b) => o.side === 'B' ? b.px - a.px : a.px - b.px); }
+      L.q.push({ id: o.id, n: left }); st.touched.add(o.px.toFixed(2));
+      tail = `剩余 ${fmt(left)} 股挂在${o.side === 'B' ? '买' : '卖'}方 ${o.px.toFixed(2)}。`;
+    } else if (left > 0) tail = `剩余 ${fmt(left)} 股撤销。`;
+    else tail = '全部成交。';
+    const byPx = {}; mine.forEach(t => { byPx[t.px.toFixed(2)] = (byPx[t.px.toFixed(2)] || 0) + t.n; });
+    const done = Object.entries(byPx).map(([p, n]) => `${p} 成交 ${fmt(n)} 股`).join('，');
+    st.msg = `<b>${desc(o)}</b><br>${done ? '结果：' + done + '。' : '结果：没有成交。'}${tail}<br><span class="note">${o.why}</span>`;
+  }
+  function render() {
+    const prices = [...new Set([...st.asks, ...st.bids].map(l => l.px.toFixed(2)))].sort((a, b) => b - a);
+    const cell = (side, p) => { const L = side.find(l => l.px.toFixed(2) === p); return L ? L.q.map(r => `<span class="ord">${r.id}·${r.n}</span>`).join('') : ''; };
+    const sum = (side, p) => { const L = side.find(l => l.px.toFixed(2) === p); return L ? fmt(L.q.reduce((a, r) => a + r.n, 0)) : ''; };
+    const book = `<table><thead><tr><th>卖方挂单（订单号·股数）</th><th class="r">卖量</th><th class="r">价格</th><th class="r">买量</th><th>买方挂单</th></tr></thead><tbody>${prices.map(p => `<tr class="${st.touched.has(p) ? 'hl' : ''}"><td>${cell(st.asks, p)}</td><td class="r sell">${sum(st.asks, p)}</td><td class="r"><b>${p}</b></td><td class="r buy">${sum(st.bids, p)}</td><td>${cell(st.bids, p)}</td></tr>`).join('')}</tbody></table>`;
+    const q = `<ul class="qlist">${QUEUE.map((o, k) => `<li class="${k === st.i ? 'cur' : ''}"><span class="st">${k < st.i ? '已处理' : k === st.i ? '下一笔' : '等待'}</span><span class="mono">${desc(o)}</span></li>`).join('')}</ul>`;
+    const tr = st.trades.length ? `<table><thead><tr><th class="r">#</th><th class="r">价格</th><th class="r">股数</th><th>买方订单</th><th>卖方订单</th></tr></thead><tbody>${st.trades.map((t, k) => `<tr><td class="r">${k + 1}</td><td class="r">${t.px.toFixed(2)}</td><td class="r">${fmt(t.n)}</td><td class="mono">${t.b}</td><td class="mono">${t.s}</td></tr>`).join('')}</tbody></table>` : '<p class="note">还没有成交。</p>';
+    el.innerHTML = `<div class="bar"><button class="btn" id="m-next" type="button" ${st.i >= QUEUE.length ? 'disabled' : ''}>处理下一笔订单</button><button class="btn quiet" id="m-reset" type="button">重新开始</button><span class="status">已处理 ${st.i} / ${QUEUE.length} 笔 · 成交 ${st.trades.length} 次</span></div>
+      <div class="msg">${st.msg}</div>
+      <div class="tbl-wrap">${book}</div>
+      <div class="grid2"><div><p class="note">订单队列</p>${q}</div><div class="tbl-wrap"><p class="note">成交记录</p>${tr}</div></div>
+      <p class="note">高亮行是这一步变化的价位。买卖量按订单到达顺序从左到右排列。</p>`;
+    el.querySelector('#m-next').onclick = () => { if (st.i < QUEUE.length) { proc(QUEUE[st.i]); st.i++; render(); } };
+    el.querySelector('#m-reset').onclick = () => { st = init(); render(); };
+  }
+  render();
+};
+
+/* 集合竞价 */
+W.auction = el => {
+  const prev = 10.00;
+  let bigQty = 300;
+  function calc() {
+    const buys = [[10.10, 200], [10.08, bigQty], [10.05, 500], [10.03, 400], [10.00, 600]];
+    const sells = [[9.98, 300], [10.00, 400], [10.03, 500], [10.05, 300], [10.08, 600]];
+    const ps = [...new Set([...buys, ...sells].map(x => x[0]))].sort((a, b) => b - a);
+    const rows = ps.map(p => {
+      const B = buys.filter(x => x[0] >= p - 1e-9).reduce((a, x) => a + x[1], 0);
+      const S = sells.filter(x => x[0] <= p + 1e-9).reduce((a, x) => a + x[1], 0);
+      return { p, B, S, v: Math.min(B, S), u: Math.abs(B - S) };
+    });
+    const best = rows.slice().sort((a, b) => b.v - a.v || a.u - b.u || Math.abs(a.p - prev) - Math.abs(b.p - prev))[0];
+    return { buys, sells, rows, best };
+  }
+  function render() {
+    const { buys, sells, rows, best } = calc();
+    const maxV = Math.max(...rows.map(r => r.v), 1);
+    const p = best.p;
+    const bAbove = buys.filter(x => x[0] > p + 1e-9).reduce((a, x) => a + x[1], 0);
+    const sBelow = sells.filter(x => x[0] < p - 1e-9).reduce((a, x) => a + x[1], 0);
+    const bAt = buys.filter(x => Math.abs(x[0] - p) < 1e-9).reduce((a, x) => a + x[1], 0);
+    const sAt = sells.filter(x => Math.abs(x[0] - p) < 1e-9).reduce((a, x) => a + x[1], 0);
+    const fb = best.v - bAbove, fs = best.v - sBelow;
+    const ord = (arr, cls) => arr.map(([px, n]) => `<tr><td class="r ${cls}">${px.toFixed(2)}</td><td class="r">${fmt(n)}</td></tr>`).join('');
+    el.innerHTML = `<div class="bar"><label for="auc-q" class="note">修改 10.08 元买单的股数</label><input type="number" id="auc-q" min="0" max="5000" step="100" value="${bigQty}"><span class="status">前收盘价 10.00 · 9:25 时的全部订单（虚构）</span></div>
+      <div class="grid2"><div class="tbl-wrap"><table><thead><tr><th class="r">买单价格</th><th class="r">股数</th></tr></thead><tbody>${ord(buys, 'buy')}</tbody></table></div>
+      <div class="tbl-wrap"><table><thead><tr><th class="r">卖单价格</th><th class="r">股数</th></tr></thead><tbody>${ord(sells, 'sell')}</tbody></table></div></div>
+      <div class="tbl-wrap"><table><thead><tr><th class="r">候选价格</th><th class="r">累计买量（≥ 该价）</th><th class="r">累计卖量（≤ 该价）</th><th>可成交量</th><th class="r">未匹配量</th></tr></thead><tbody>
+      ${rows.map(r => `<tr class="${r === best ? 'hl' : ''}"><td class="r"><b>${r.p.toFixed(2)}</b></td><td class="r buy">${fmt(r.B)}</td><td class="r sell">${fmt(r.S)}</td><td><div class="cell-bar"><span class="b" style="width:${Math.round(r.v / maxV * 120)}px"></span><span class="num">${fmt(r.v)}</span></div></td><td class="r">${fmt(r.u)}</td></tr>`).join('')}</tbody></table></div>
+      <div class="msg"><b>开盘价 ${p.toFixed(2)} 元，成交 ${fmt(best.v)} 股。</b><br>高于 ${p.toFixed(2)} 的买单（${fmt(bAbove)} 股）全部成交；低于 ${p.toFixed(2)} 的卖单（${fmt(sBelow)} 股）全部成交。在 ${p.toFixed(2)} 这一价位，买方成交 ${fmt(fb)} / ${fmt(bAt)} 股，卖方成交 ${fmt(fs)} / ${fmt(sAt)} 股。<br><span class="note">多个价格可成交量相同时，本示例取未匹配量最小的价格，再取最接近前收盘价的价格；各交易所的具体规则以其交易规则为准。</span></div>`;
+    const inp = el.querySelector('#auc-q');
+    inp.addEventListener('change', () => { const v = Math.max(0, Math.min(5000, Math.round((+inp.value || 0) / 100) * 100)); bigQty = v; render(); el.querySelector('#auc-q').focus(); });
+  }
+  render();
+};
+
+/* 做市报价（Avellaneda–Stoikov） */
+W.mm = el => {
+  const s = 100;
+  const v = { q: 0, sig: 1.5, g: 0.1, k: 1.5 };
+  el.innerHTML = `<div class="grid2"><div class="ctrl">
+      <label for="mm-q">库存（手）</label><input type="range" id="mm-q" min="-5" max="5" step="1" value="0"><output id="mm-qo"></output>
+      <label for="mm-s">波动率 σ</label><input type="range" id="mm-s" min="0.5" max="2.5" step="0.1" value="1.5"><output id="mm-so"></output>
+      <label for="mm-g">风险厌恶 γ</label><input type="range" id="mm-g" min="0.02" max="0.2" step="0.01" value="0.1"><output id="mm-go"></output>
+      <label for="mm-k">订单到达 k</label><input type="range" id="mm-k" min="0.5" max="3" step="0.1" value="1.5"><output id="mm-ko"></output>
+    </div><div class="formula">保留价格 r = s − q·γ·σ²<br>总价差 δ = γ·σ² + (2/γ)·ln(1 + γ/k)<br>买价 = r − δ/2　卖价 = r + δ/2</div></div>
+    <div class="grid2"><div id="mm-chart"></div><div class="tbl-wrap" id="mm-tbl"></div></div>
+    <p class="note">模型来自 Avellaneda 与 Stoikov（2008），这里取剩余时间 T − t = 1，中间价 s = 100.00。实际做市程序还会加入订单流方向、对冲成本和交易所报价义务。</p>`;
+  const ids = { q: 'mm-q', sig: 'mm-s', g: 'mm-g', k: 'mm-k' };
+  function upd() {
+    const { q, sig, g, k } = v;
+    const r = s - q * g * sig * sig;
+    const d = g * sig * sig + (2 / g) * Math.log(1 + g / k);
+    const bid = r - d / 2, ask = r + d / 2, pct = d / s * 100;
+    el.querySelector('#mm-qo').textContent = (q > 0 ? '+' : '') + q;
+    el.querySelector('#mm-so').textContent = sig.toFixed(1);
+    el.querySelector('#mm-go').textContent = g.toFixed(2);
+    el.querySelector('#mm-ko').textContent = k.toFixed(1);
+    const lo = Math.floor(Math.min(bid, s) - 0.6), hi = Math.ceil(Math.max(ask, s) + 0.6);
+    const H = 260, top = 14, bot = 18, Wd = 320;
+    const y = p => top + (hi - p) / (hi - lo) * (H - top - bot);
+    let g2 = '';
+    const step = (hi - lo) > 8 ? 2 : 1;
+    for (let p = lo; p <= hi; p += step) g2 += `<line class="grid" x1="44" x2="${Wd - 6}" y1="${y(p)}" y2="${y(p)}"/><text x="38" y="${y(p) + 4}" text-anchor="end" class="num">${p}</text>`;
+    const line = (p, color, lbl, w) => `<line x1="56" x2="190" y1="${y(p)}" y2="${y(p)}" style="stroke:${color};stroke-width:${w}"/><text x="198" y="${y(p) + 4}" class="t-strong">${lbl} ${p.toFixed(2)}</text>`;
+    const band = `<rect x="56" y="${y(ask)}" width="134" height="${Math.max(1, y(bid) - y(ask))}" style="fill:var(--accent-soft)"/>`;
+    el.querySelector('#mm-chart').innerHTML = `<svg class="chart" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="报价示意：买价 ${bid.toFixed(2)}，卖价 ${ask.toFixed(2)}">${g2}${band}${line(ask, 'var(--other)', '卖价', 2.4)}${line(s, 'var(--muted)', '中间价', 1)}${line(r, 'var(--accent-strong)', '保留价', 1.4)}${line(bid, 'var(--accent)', '买价', 2.4)}</svg>`;
+    const ok = pct <= 2;
+    el.querySelector('#mm-tbl').innerHTML = `<table><thead><tr><th>报价面板（示例股票）</th><th class="r">数值</th></tr></thead><tbody>
+      <tr><td>中间价</td><td class="r">${s.toFixed(2)}</td></tr>
+      <tr><td>库存</td><td class="r">${(q > 0 ? '+' : '') + q} 手</td></tr>
+      <tr><td>保留价格</td><td class="r">${r.toFixed(2)}</td></tr>
+      <tr class="hl"><td class="buy">买价</td><td class="r buy">${bid.toFixed(2)}</td></tr>
+      <tr class="hl"><td class="sell">卖价</td><td class="r sell">${ask.toFixed(2)}</td></tr>
+      <tr><td>价差 / 价差率</td><td class="r">${d.toFixed(2)} / ${pct.toFixed(2)}%</td></tr>
+      <tr><td>对照：科创板“中”类上限 2%</td><td class="r ${ok ? 'okv' : 'warnv'}">${ok ? '符合' : '超过上限'}</td></tr>
+      </tbody></table><p class="note" style="margin-top:8px">${q > 0 ? '持有多头：报价整体下移，卖出更容易成交。' : q < 0 ? '持有空头：报价整体上移，买入更容易成交。' : '库存为零：报价以中间价为中心。'}${ok ? '' : ' 价差超过上限的时间不计入有效报价时间。'}</p>`;
+  }
+  Object.entries(ids).forEach(([key, id]) => el.querySelector('#' + id).addEventListener('input', ev => { v[key] = +ev.target.value; upd(); }));
+  upd();
+};
+
+/* 高频：延迟与信号 */
+W.hft = el => {
+  const stages = ['网卡收包', '行情解码', '更新订单簿', '计算信号', '风控检查', '编码发送'];
+  const sw = [800, 400, 300, 500, 300, 700], hw = [100, 60, 40, 80, 50, 120];
+  const total = a => a.reduce((x, y) => x + y, 0);
+  const max = 3000, X0 = 96, Wd = 640, span = Wd - X0 - 16;
+  const bar = (arr, y) => { let x = X0, s = ''; arr.forEach((d, i) => { const w = d / max * span; s += `<rect x="${x}" y="${y}" width="${Math.max(w - 1, 1)}" height="22" rx="2" style="fill:${i % 2 ? 'var(--accent-soft)' : 'var(--accent)'}"/>`; x += w; }); return s + `<text x="${x + 6 > Wd - 60 ? x - 6 : x + 6}" y="${y + 16}" text-anchor="${x + 6 > Wd - 60 ? 'end' : 'start'}" class="t-strong num">${fmt(total(arr))} ns</text>`; };
+  let ticks = ''; for (let t = 0; t <= max; t += 500) ticks += `<line class="grid" x1="${X0 + t / max * span}" x2="${X0 + t / max * span}" y1="10" y2="96"/><text x="${X0 + t / max * span}" y="112" text-anchor="middle" class="num">${t}</text>`;
+  el.innerHTML = `<p class="note">tick-to-trade：从行情包到达网卡到订单离开网卡的时间（单位纳秒，量级示意，不同系统差异很大；不含网络传输和交易所内部处理）。</p>
+    <svg class="chart" viewBox="0 0 ${Wd} 124" role="img" aria-label="软件路径约 3000 纳秒，FPGA 路径约 450 纳秒">${ticks}<text x="${X0 - 8}" y="40" text-anchor="end" class="t-strong">软件 + 内核旁路</text>${bar(sw, 24)}<text x="${X0 - 8}" y="78" text-anchor="end" class="t-strong">FPGA</text>${bar(hw, 62)}</svg>
+    <div class="tbl-wrap"><table><thead><tr><th>环节</th>${stages.map(s => `<th class="r">${s}</th>`).join('')}</tr></thead><tbody><tr><td>软件</td>${sw.map(d => `<td class="r">${d}</td>`).join('')}</tr><tr><td>FPGA</td>${hw.map(d => `<td class="r">${d}</td>`).join('')}</tr></tbody></table></div>
+    <div class="grid2"><div class="tbl-wrap"><p class="note">本地订单簿（虚构）</p><table><thead><tr><th>档位</th><th class="r">价格</th><th class="r">挂单量</th></tr></thead><tbody>
+      <tr><td class="sell">卖二</td><td class="r">10.03</td><td class="r">5,100</td></tr><tr class="hl"><td class="sell">卖一</td><td class="r">10.02</td><td class="r">600</td></tr>
+      <tr class="hl"><td class="buy">买一</td><td class="r">10.01</td><td class="r">4,200</td></tr><tr><td class="buy">买二</td><td class="r">10.00</td><td class="r">3,800</td></tr></tbody></table></div>
+      <div class="formula">不平衡度 I = (买一量 − 卖一量) / (买一量 + 卖一量)<br>　　　 = (4,200 − 600) / 4,800 = 0.75<br>阈值 0.60 → 触发<br>动作：以 10.02 买入卖一的 600 股，<br>　　　同时把自己在 10.02 的卖单撤到 10.03</div></div>
+    <p class="note">逻辑：卖一只剩 600 股而买一有 4,200 股，卖一很可能先被吃完，价格上移一档。抢在别人之前成交需要更短的 tick-to-trade。</p>`;
+};
+
+/* VWAP / TWAP */
+W.vwap = el => {
+  const buckets = ['9:30', '10:00', '10:30', '11:00', '13:00', '13:30', '14:00', '14:30'];
+  const prof = [18, 12, 10, 9, 10, 10, 12, 19];
+  const N = 1000000;
+  let algo = 'VWAP';
+  function render() {
+    const sched = algo === 'VWAP' ? prof.map(p => N * p / 100) : prof.map(() => N / 8);
+    const Wd = 640, H = 240, X0 = 48, top = 16, bot = 40, bw = (Wd - X0 - 10) / 8;
+    const y = v => top + (1 - v / 200000) * (H - top - bot);
+    let g = '';
+    for (let t = 0; t <= 200000; t += 50000) g += `<line class="grid" x1="${X0}" x2="${Wd - 6}" y1="${y(t)}" y2="${y(t)}"/><text x="${X0 - 6}" y="${y(t) + 4}" text-anchor="end" class="num">${t / 10000}</text>`;
+    sched.forEach((v, i) => {
+      const x = X0 + i * bw + 8;
+      g += `<rect x="${x}" y="${y(v)}" width="${bw - 16}" height="${y(0) - y(v)}" rx="2" style="fill:var(--accent)"/>`;
+      g += `<text x="${x + (bw - 16) / 2}" y="${y(v) - 5}" text-anchor="middle" class="t-strong num">${fmt(v / 10000, 1)}</text>`;
+      g += `<text x="${x + (bw - 16) / 2}" y="${H - 22}" text-anchor="middle" class="num">${buckets[i]}</text><text x="${x + (bw - 16) / 2}" y="${H - 6}" text-anchor="middle" class="num">${prof[i]}%</text>`;
+    });
+    g += `<text x="${X0 - 6}" y="10" text-anchor="end">万股</text>`;
+    const done = sched.slice(0, 3).reduce((a, b) => a + b, 0) / N * 100;
+    el.innerHTML = `<div class="bar"><div class="seg" role="group" aria-label="算法"><button type="button" id="va-v" aria-pressed="${algo === 'VWAP'}">VWAP</button><button type="button" id="va-t" aria-pressed="${algo === 'TWAP'}">TWAP</button></div><span class="status">母单：买入 1,000,000 股 · 每根柱为半小时内计划成交量 · 下方百分比为该时段的历史成交量占比</span></div>
+      <svg class="chart" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="${algo} 拆单计划">${g}</svg>
+      <div class="ems"><div class="row h"><span>母单</span><span>方向</span><span>数量</span><span>算法</span><span>时段</span><span>参与率上限</span><span>11:00 时进度</span></div>
+      <div class="row"><span>示例股票 A</span><span class="buy">买入</span><span>1,000,000</span><span>${algo}</span><span>9:30–15:00</span><span>15%</span><span>${done.toFixed(1)}%</span></div>
+      <div style="padding:0 10px 10px"><div class="prog"><span style="width:${done}%"></span></div></div></div>
+      <p class="note">${algo === 'VWAP' ? 'VWAP 按历史成交量曲线分配：A 股开盘和收盘前成交最多，呈 U 形，所以两端多下单，市场冲击相对平均。' : 'TWAP 每个时段下同样多的量，简单、可预测；在午盘成交清淡时占比偏高，冲击更大。'}</p>`;
+    el.querySelector('#va-v').onclick = () => { algo = 'VWAP'; render(); };
+    el.querySelector('#va-t').onclick = () => { algo = 'TWAP'; render(); };
+  }
+  render();
+};
+
+/* 量化：因子暴露 */
+W.quant = el => {
+  const f = [['价值', 0.32], ['质量', 0.25], ['动量', 0.18], ['低波动', 0.12], ['分析师预期', 0.21], ['市值', -0.04], ['流动性', -0.06], ['行业偏离（最大）', 0.02]];
+  const Wd = 600, rowH = 28, X0 = 140, mid = X0 + (Wd - X0 - 60) / 2, sc = (Wd - X0 - 60) / 2 / 0.4, H = f.length * rowH + 30;
+  let s = `<line class="axis" x1="${mid}" x2="${mid}" y1="6" y2="${H - 22}"/>`;
+  [-0.4, -0.2, 0.2, 0.4].forEach(t => { s += `<line class="grid" x1="${mid + t * sc}" x2="${mid + t * sc}" y1="6" y2="${H - 22}"/><text x="${mid + t * sc}" y="${H - 6}" text-anchor="middle" class="num">${t > 0 ? '+' : ''}${t}</text>`; });
+  s += `<text x="${mid}" y="${H - 6}" text-anchor="middle" class="num">0</text>`;
+  f.forEach(([n, v], i) => {
+    const y = 10 + i * rowH, x = v >= 0 ? mid : mid + v * sc, w = Math.abs(v) * sc;
+    s += `<text x="${X0 - 10}" y="${y + 13}" text-anchor="end" class="t-strong">${n}</text><rect x="${x}" y="${y}" width="${Math.max(w, 1)}" height="18" rx="2" style="fill:${v >= 0 ? 'var(--accent)' : 'var(--other)'}"/>`;
+    s += `<text x="${v >= 0 ? mid + w + 6 : x - 6}" y="${y + 13}" text-anchor="${v >= 0 ? 'start' : 'end'}" class="num">${v > 0 ? '+' : ''}${v.toFixed(2)}</text>`;
+  });
+  el.innerHTML = `<p class="note">一个中证 1000 指数增强组合相对基准的标准化因子暴露（虚构）。前五项是主动选择的收益来源；市值、流动性、行业被约束在零附近，避免组合变成押注小盘或某个行业。</p>
+    <svg class="chart" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="因子暴露条形图">${s}</svg>
+    <div class="formula">优化目标：max  αᵀw − λ·wᵀΣw − c·|w − w₀|<br>约束：|行业偏离| ≤ 2%　|市值暴露| ≤ 0.1　单票 ≤ 1%　日换手 ≤ 15%</div>
+    <p class="note">α 是合成后的预期收益，Σ 是风险模型给出的协方差矩阵，c·|w − w₀| 惩罚换手带来的交易成本。</p>`;
+};
+
+/* 债券招标 */
+W.tender = el => {
+  const SIZE = 300;
+  const bids = [['A 行', 1.80, 60], ['B 行', 1.82, 80], ['C 券商', 1.83, 50], ['D 行', 1.85, 70], ['E 行', 1.86, 60], ['F 行', 1.88, 90], ['G 券商', 1.90, 40]];
+  let mode = 'dutch';
+  let cum = 0; const alloc = bids.map(([n, r, a]) => { const x = Math.max(0, Math.min(a, SIZE - cum)); cum += a; return x; });
+  const won = alloc.map((x, i) => [bids[i], x]).filter(([, x]) => x > 0);
+  const marginal = won[won.length - 1][0][1];
+  const wavg = won.reduce((s, [b, x]) => s + b[1] * x, 0) / SIZE;
+  function render() {
+    const cost = (r) => mode === 'dutch' ? marginal : mode === 'us' ? r : (r <= wavg + 1e-9 ? wavg : r);
+    const coupon = mode === 'dutch' ? marginal : wavg;
+    const rows = bids.map(([n, r, a], i) => { const x = alloc[i]; return `<tr class="${x > 0 ? '' : 'dim'}"><td>${n}</td><td class="r">${r.toFixed(2)}%</td><td class="r">${a}</td><td class="r">${x > 0 ? fmt(x, x % 1 ? 1 : 0) : '0'}</td><td class="r">${x > 0 ? cost(r).toFixed(2) + '%' : '—'}</td><td>${x > 0 ? (mode === 'mixed' ? (r <= wavg + 1e-9 ? '按面值' : '低于面值') : '') : '未中标'}</td></tr>`; }).join('');
+    const expl = { dutch: `荷兰式（单一价格）：所有中标者都按边际中标利率 ${marginal.toFixed(2)}% 认购，票面利率 ${marginal.toFixed(2)}%。投标者愿意报更低的利率，因为最终按统一利率成交。`,
+      us: `美国式（多重价格）：每个中标者按自己的投标利率认购。票面利率取全场加权平均中标利率 ${wavg.toFixed(2)}%，投标利率高于它的机构按折价认购。报价激进的机构承担更低的收益率。`,
+      mixed: `混合式：票面利率为全场加权平均中标利率 ${wavg.toFixed(2)}%。投标利率不高于它的标位按面值认购；高于它的标位按各自的中标利率折算价格认购（低于面值）。` }[mode];
+    el.innerHTML = `<div class="bar"><div class="seg" role="group" aria-label="招标方式"><button type="button" id="td-d" aria-pressed="${mode === 'dutch'}">荷兰式</button><button type="button" id="td-u" aria-pressed="${mode === 'us'}">美国式</button><button type="button" id="td-m" aria-pressed="${mode === 'mixed'}">混合式</button></div><span class="status">计划发行 300 亿元 · 投标 450 亿元 · 全场倍数 1.50 · 虚构数据</span></div>
+      <div class="tbl-wrap"><table><thead><tr><th>投标人</th><th class="r">投标利率</th><th class="r">投标量（亿）</th><th class="r">中标量（亿）</th><th class="r">实际认购利率</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="msg"><b>票面利率 ${coupon.toFixed(2)}%。</b> 边际中标利率 ${marginal.toFixed(2)}%：累计到 E 行时达到 300 亿，E 行投标 60 亿只中标 40 亿。<br>${expl}</div>`;
+    el.querySelector('#td-d').onclick = () => { mode = 'dutch'; render(); };
+    el.querySelector('#td-u').onclick = () => { mode = 'us'; render(); };
+    el.querySelector('#td-m').onclick = () => { mode = 'mixed'; render(); };
+  }
+  render();
+};
+
+/* IPO 询价簿 */
+W.ipoBook = el => {
+  const book = [[22.50, 30], [22.20, 40], [21.80, 120], [21.50, 300], [21.20, 800], [21.00, 1500], [20.80, 2100], [20.60, 1800], [20.40, 1300], [20.20, 900], [20.00, 700], [19.50, 400], [19.00, 200], [18.00, 100]];
+  const total = book.reduce((a, b) => a + b[1], 0);
+  let pct = 1;
+  function render() {
+    let rm = total * pct / 100;
+    const rows = book.map(([p, q]) => { const cut = Math.min(q, rm); rm -= cut; return { p, q, cut, keep: q - cut }; });
+    const kept = rows.filter(r => r.keep > 0);
+    const kq = kept.reduce((a, r) => a + r.keep, 0);
+    const wavg = kept.reduce((a, r) => a + r.p * r.keep, 0) / kq;
+    let acc = 0, median = 0; for (const r of kept.slice().sort((a, b) => a.p - b.p)) { acc += r.keep; if (acc >= kq / 2) { median = r.p; break; } }
+    const price = Math.floor(Math.min(median, wavg) * 100) / 100;
+    const Wd = 640, rowH = 20, X0 = 64, H = book.length * rowH + 30, sc = (Wd - X0 - 70) / 2100;
+    let s = '';
+    [0, 500, 1000, 1500, 2000].forEach(t => { s += `<line class="grid" x1="${X0 + t * sc}" x2="${X0 + t * sc}" y1="4" y2="${H - 22}"/><text x="${X0 + t * sc}" y="${H - 6}" text-anchor="middle" class="num">${t}</text>`; });
+    rows.forEach((r, i) => {
+      const y = 6 + i * rowH;
+      const valid = r.p >= price - 1e-9;
+      s += `<text x="${X0 - 8}" y="${y + 12}" text-anchor="end" class="num ${valid ? 't-strong' : ''}">${r.p.toFixed(2)}</text>`;
+      if (r.keep > 0) s += `<rect x="${X0}" y="${y}" width="${r.keep * sc}" height="14" rx="2" style="fill:${valid ? 'var(--accent)' : 'var(--surface-2)'};stroke:${valid ? 'none' : 'var(--border)'}"/>`;
+      if (r.cut > 0) s += `<rect x="${X0 + r.keep * sc}" y="${y}" width="${Math.max(r.cut * sc, 2)}" height="14" rx="2" style="fill:var(--other-soft);stroke:var(--other)"/>`;
+      s += `<text x="${X0 + r.q * sc + 6}" y="${y + 12}" class="num">${fmt(r.q)}${r.cut > 0 ? '（剔除 ' + fmt(r.cut, r.cut % 1 ? 1 : 0) + '）' : ''}</text>`;
+    });
+    const yP = 6 + rows.findIndex(r => r.p < price - 1e-9) * rowH - 3;
+    s += `<line x1="${X0 - 50}" x2="${Wd - 8}" y1="${yP}" y2="${yP}" style="stroke:var(--accent-strong);stroke-width:1.4"/><text x="${Wd - 8}" y="${yP - 4}" text-anchor="end" class="t-strong">发行价 ${price.toFixed(2)}</text>`;
+    s += `<text x="${X0}" y="${H - 6}" dx="-56" class="num">万股</text>`;
+    el.innerHTML = `<div class="bar"><div class="seg" role="group" aria-label="剔除比例"><button type="button" id="ib-1" aria-pressed="${pct === 1}">剔除 1%</button><button type="button" id="ib-3" aria-pressed="${pct === 3}">剔除 3%</button></div><span class="status">网下拟申购总量 ${fmt(total)} 万股 · 每行是一个报价价位 · 虚构数据</span></div>
+      <svg class="chart" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="询价簿条形图">${s}</svg>
+      <div class="msg">从最高价开始剔除拟申购总量的 ${pct}%（${fmt(total * pct / 100, 1)} 万股）。剩余报价的中位数 ${median.toFixed(2)} 元、加权平均数 ${wavg.toFixed(2)} 元。本例取两者中较低者作为发行价 ${price.toFixed(2)} 元：深色为有效报价，浅色为低于发行价未入围的报价，灰蓝框为被剔除的部分。</div>
+      <p class="note">实际定价还要参考可比公司估值、行业市盈率，以及公募、社保、养老金、年金、保险等长期投资者报价的中位数和加权平均数；发行价超过这些数值时需要额外披露。</p>`;
+    el.querySelector('#ib-1').onclick = () => { pct = 1; render(); };
+    el.querySelector('#ib-3').onclick = () => { pct = 3; render(); };
+  }
+  render();
+};
+
+/* Platts 窗口 */
+W.platts = el => {
+  const EV = [
+    ['16:00:00', '窗口开始。今天评估的是两个月后装船的 Dubai partial，单位 25,000 桶。', null],
+    ['16:03:12', '贸易商甲 出价买入 70.10 美元/桶', ['bid', '甲', 70.10]],
+    ['16:05:40', '炼厂乙 报价卖出 70.45', ['ask', '乙', 70.45]],
+    ['16:11:02', '贸易商丙 出价买入 70.15', ['bid', '丙', 70.15]],
+    ['16:17:30', '炼厂乙 降低卖价至 70.35', ['ask', '乙', 70.35]],
+    ['16:22:48', '贸易商甲 提高买价至 70.22', ['bid', '甲', 70.22]],
+    ['16:26:05', '生产商丁 报价卖出 70.30', ['ask', '丁', 70.30]],
+    ['16:29:10', '贸易商甲 接受丁的卖价：成交 1 个 partial @ 70.30', ['trade', '甲', '丁', 70.30]],
+    ['16:29:40', '炼厂乙 降低卖价至 70.32', ['ask', '乙', 70.32]],
+    ['16:30:00', '窗口收盘。仍有效的最高买价 70.15（丙），最低卖价 70.32（乙），最后成交 70.30。评估价 70.30：位于有效买价和卖价之间，并与最后成交一致。', ['close']]
+  ];
+  let i = 0;
+  function state() {
+    const bids = {}, asks = {}; let trade = null;
+    EV.slice(0, i).forEach(([, , a]) => {
+      if (!a) return;
+      if (a[0] === 'bid') bids[a[1]] = a[2];
+      if (a[0] === 'ask') asks[a[1]] = a[2];
+      if (a[0] === 'trade') { trade = a; delete bids[a[1]]; delete asks[a[2]]; }
+    });
+    return { bids, asks, trade };
+  }
+  function render() {
+    const { bids, asks, trade } = state();
+    const bb = Object.entries(bids).sort((a, b) => b[1] - a[1]), ba = Object.entries(asks).sort((a, b) => a[1] - b[1]);
+    const clock = i ? EV[i - 1][0] : '15:59:59';
+    const closed = i === EV.length;
+    el.innerHTML = `<div class="bar"><button class="btn" id="pl-next" type="button" ${closed ? 'disabled' : ''}>显示下一条</button><button class="btn quiet" id="pl-reset" type="button">从头开始</button><span class="status">新加坡时间 <span class="mono">${clock}</span> · 已显示 ${i} / ${EV.length} 条 · 参与者与价格均为虚构</span></div>
+      <div class="grid2"><div class="tbl-wrap"><p class="note">窗口日志</p><table><tbody>${EV.slice(0, i).map((e, k) => `<tr class="${k === i - 1 ? 'hl' : ''}"><td class="num">${e[0]}</td><td>${e[1]}</td></tr>`).join('') || '<tr><td class="note">点击“显示下一条”开始。</td></tr>'}</tbody></table></div>
+      <div class="tbl-wrap"><p class="note">当前有效报价</p><table><thead><tr><th>方向</th><th>报价方</th><th class="r">美元/桶</th></tr></thead><tbody>
+        ${ba.slice().reverse().map(([n, p]) => `<tr><td class="sell">卖</td><td>${n}</td><td class="r sell">${p.toFixed(2)}</td></tr>`).join('')}
+        ${bb.map(([n, p]) => `<tr><td class="buy">买</td><td>${n}</td><td class="r buy">${p.toFixed(2)}</td></tr>`).join('')}
+        ${!ba.length && !bb.length ? '<tr><td colspan="3" class="note">暂无</td></tr>' : ''}</tbody></table>
+        <p class="note" style="margin-top:8px">${trade ? `最后成交：${trade[1]} 从 ${trade[2]} 买入 1 个 partial @ ${trade[3].toFixed(2)}` : '尚无成交'}${closed ? '<br><b class="okv">评估价 70.30</b>' : ''}</p></div></div>
+      <p class="note">窗口内的买卖报价必须公开、可执行，报价方被接受时有义务成交。同一对手方累计成交 20 个 partial（500,000 桶）后，卖方需交付一整船原油。</p>`;
+    el.querySelector('#pl-next').onclick = () => { if (i < EV.length) { i++; render(); } };
+    el.querySelector('#pl-reset').onclick = () => { i = 0; render(); };
+  }
+  render();
+};
+
+/* 实货 + 期货对冲 */
+W.oilHedge = el => {
+  const BBL = 600000, F0 = 75.00, buyPrem = 1.20, sellPrem = 1.85;
+  let F1 = 71.00;
+  el.innerHTML = `<div class="ctrl" style="grid-template-columns: 10em minmax(0,1fr) 5em"><label for="oh-f">卖出时的 Brent 价格</label><input type="range" id="oh-f" min="60" max="90" step="0.5" value="71"><output id="oh-fo"></output></div><div class="tbl-wrap" id="oh-t"></div><p class="note" id="oh-n"></p>`;
+  function upd() {
+    const buy = F0 + buyPrem, sell = F1 + sellPrem;
+    const phys = (sell - buy) * BBL, fut = (F0 - F1) * BBL, net = phys + fut;
+    const m = v => (v >= 0 ? '+' : '−') + fmt(Math.abs(v)) + ' 美元';
+    el.querySelector('#oh-fo').textContent = F1.toFixed(1);
+    el.querySelector('#oh-t').innerHTML = `<table><thead><tr><th></th><th class="r">买入时</th><th class="r">卖出时</th><th class="r">盈亏</th></tr></thead><tbody>
+      <tr><td>Brent 期货</td><td class="r">${F0.toFixed(2)}</td><td class="r">${F1.toFixed(2)}</td><td></td></tr>
+      <tr><td>实货：600,000 桶</td><td class="r">买 ${buy.toFixed(2)}（+${buyPrem.toFixed(2)}）</td><td class="r">卖 ${sell.toFixed(2)}（+${sellPrem.toFixed(2)}）</td><td class="r">${m(phys)}</td></tr>
+      <tr><td>期货：卖出 600 手后买回</td><td class="r">卖 ${F0.toFixed(2)}</td><td class="r">买 ${F1.toFixed(2)}</td><td class="r">${m(fut)}</td></tr>
+      <tr class="hl"><td><b>合计</b></td><td></td><td></td><td class="r"><b>${m(net)}</b></td></tr></tbody></table>`;
+    el.querySelector('#oh-n').textContent = `拖动滑块改变油价，合计始终是 (1.85 − 1.20) × 600,000 = 390,000 美元。对冲之后，交易员的利润只取决于升贴水之差；运费、仓储、融资成本还要从中扣除。1 手 Brent 期货 = 1,000 桶。`;
+  }
+  el.querySelector('#oh-f').addEventListener('input', ev => { F1 = +ev.target.value; upd(); });
+  upd();
+};
+
+/* 基差 */
+W.basis = el => {
+  const T = 1000, F0 = 75500, S0 = 75000, B0 = S0 - F0;
+  let F1 = 70300, B1 = -300;
+  el.innerHTML = `<div class="ctrl" style="grid-template-columns: 10em minmax(0,1fr) 5.5em">
+      <label for="bs-f">3 个月后期货价</label><input type="range" id="bs-f" min="60000" max="85000" step="100" value="70300"><output id="bs-fo"></output>
+      <label for="bs-b">3 个月后基差</label><input type="range" id="bs-b" min="-1200" max="800" step="50" value="-300"><output id="bs-bo"></output></div>
+    <div class="tbl-wrap" id="bs-t"></div><p class="note" id="bs-n"></p>`;
+  function upd() {
+    const S1 = F1 + B1;
+    const spot = (S1 - S0) * T, fut = (F0 - F1) * T, net = spot + fut;
+    const m = v => (v >= 0 ? '+' : '−') + fmt(Math.abs(v)) + ' 元';
+    el.querySelector('#bs-fo').textContent = fmt(F1);
+    el.querySelector('#bs-bo').textContent = (B1 > 0 ? '+' : '') + fmt(B1);
+    el.querySelector('#bs-t').innerHTML = `<table><thead><tr><th>铜（元/吨）</th><th class="r">现在</th><th class="r">3 个月后</th><th class="r">1000 吨盈亏</th></tr></thead><tbody>
+      <tr><td>现货价</td><td class="r">${fmt(S0)}</td><td class="r">${fmt(S1)}</td><td class="r">${m(spot)}（相对现在卖出）</td></tr>
+      <tr><td>期货价（卖出后买回）</td><td class="r">${fmt(F0)}</td><td class="r">${fmt(F1)}</td><td class="r">${m(fut)}</td></tr>
+      <tr><td>基差 = 现货 − 期货</td><td class="r">${fmt(B0)}</td><td class="r">${fmt(B1)}</td><td></td></tr>
+      <tr class="hl"><td><b>套保后合计</b></td><td></td><td></td><td class="r"><b>${m(net)}</b></td></tr></tbody></table>`;
+    el.querySelector('#bs-n').textContent = `合计 = (期末基差 − 期初基差) × 1000 吨 = (${B1} − (${B0})) × 1000。改变期货价格不影响合计，只有基差变化会影响。基差${B1 > B0 ? '走强，对卖出套保有利' : B1 < B0 ? '走弱，对卖出套保不利' : '不变，价格风险被完全对冲'}。`;
+  }
+  el.querySelector('#bs-f').addEventListener('input', ev => { F1 = +ev.target.value; upd(); });
+  el.querySelector('#bs-b').addEventListener('input', ev => { B1 = +ev.target.value; upd(); });
+  upd();
+};
+
+/* CTA */
+W.cta = el => {
+  let a = 7; const rnd = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const P = [100]; for (let d = 1; d < 260; d++) { const dr = d < 90 ? 0.18 : d < 160 ? -0.24 : d < 200 ? 0 : 0.22; P.push(P[d - 1] + dr + gauss() * 0.9); }
+  const ma = n => P.map((_, i) => i < n - 1 ? null : P.slice(i - n + 1, i + 1).reduce((x, y) => x + y, 0) / n);
+  const m20 = ma(20), m60 = ma(60);
+  const D0 = 60, D1 = 259;
+  const pos = P.map((_, i) => i < D0 ? 0 : (m20[i] > m60[i] ? 1 : -1));
+  let flips = 0; for (let i = D0 + 1; i <= D1; i++) if (pos[i] !== pos[i - 1]) flips++;
+  const sl = P.slice(D0); const lo = Math.floor(Math.min(...sl) / 5) * 5, hi = Math.ceil(Math.max(...sl) / 5) * 5;
+  const Wd = 640, X0 = 40, X1 = Wd - 70, top = 10, ph = 200, pTop = ph + 30, pH = 34;
+  const x = i => X0 + (i - D0) / (D1 - D0) * (X1 - X0);
+  const y = v => top + (hi - v) / (hi - lo) * (ph - top);
+  const path = arr => arr.map((v, i) => i < D0 || v == null ? '' : `${i === D0 ? 'M' : 'L'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  let s = '';
+  for (let v = lo; v <= hi; v += 10) s += `<line class="grid" x1="${X0}" x2="${X1}" y1="${y(v)}" y2="${y(v)}"/><text x="${X0 - 6}" y="${y(v) + 4}" text-anchor="end" class="num">${v}</text>`;
+  s += `<path d="${path(P)}" style="fill:none;stroke:var(--muted);stroke-width:1"/>`;
+  s += `<path d="${path(m60)}" style="fill:none;stroke:var(--other);stroke-width:2"/>`;
+  s += `<path d="${path(m20)}" style="fill:none;stroke:var(--accent);stroke-width:2"/>`;
+  s += `<text x="${X1 + 6}" y="${y(m20[D1]) + (m20[D1] > m60[D1] ? -2 : 10)}" class="t-strong">20 日线</text><text x="${X1 + 6}" y="${y(m60[D1]) + (m20[D1] > m60[D1] ? 10 : -2)}">60 日线</text>`;
+  let segs = ''; let st = D0;
+  for (let i = D0 + 1; i <= D1 + 1; i++) if (i > D1 || pos[i] !== pos[st]) { segs += `<rect x="${x(st)}" y="${pos[st] > 0 ? pTop : pTop + pH / 2}" width="${x(Math.min(i, D1)) - x(st)}" height="${pH / 2}" style="fill:${pos[st] > 0 ? 'var(--accent)' : 'var(--other)'}"/>`; st = i; }
+  s += `<line class="axis" x1="${X0}" x2="${X1}" y1="${pTop + pH / 2}" y2="${pTop + pH / 2}"/>${segs}<text x="${X0 - 6}" y="${pTop + 12}" text-anchor="end">多</text><text x="${X0 - 6}" y="${pTop + pH - 3}" text-anchor="end">空</text>`;
+  s += `<text x="${X0}" y="${pTop + pH + 18}" class="num">第 ${D0} 天</text><text x="${X1}" y="${pTop + pH + 18}" text-anchor="end" class="num">第 ${D1} 天</text>`;
+  el.innerHTML = `<svg class="chart" viewBox="0 0 ${Wd} ${pTop + pH + 26}" role="img" aria-label="价格、20 日线、60 日线和多空持仓">${s}</svg>
+    <p class="note">虚构的期货价格（细灰线）：先上涨、再下跌、横盘、再上涨。20 日线在 60 日线之上时持多（上方色块），之下时持空（下方色块）。这段时间方向切换 ${flips} 次，横盘阶段的切换就是震荡磨损的来源。</p>`;
+};
+
+buildIndex();
+route(false);
+window.addEventListener('hashchange', () => route(true));
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
